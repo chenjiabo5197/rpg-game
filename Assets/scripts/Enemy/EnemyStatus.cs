@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyStatus
 {
-    protected EnemyStateMachine statusMachine;
+    protected EnemyStateMachine stateMachine;
     // Enemy»ùÀà
     protected Enemy enemyBase;
     protected Rigidbody2D rb;
@@ -19,7 +19,7 @@ public class EnemyStatus
 
     public EnemyStatus(Enemy _enemyBase, EnemyStateMachine _statusMachine, string _animBoolName)
     {
-        this.statusMachine = _statusMachine;
+        this.stateMachine = _statusMachine;
         this.enemyBase = _enemyBase;
         this.animBoolName = _animBoolName;
     }

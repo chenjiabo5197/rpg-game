@@ -6,7 +6,7 @@ public class SkeletonAttackState : EnemyStatus
 {
     private Enemy_Skeleton enemy;
 
-    public SkeletonAttackState(Enemy _enemyBase, EnemyStateMachine _statusMachine, string _animBoolName, Enemy_Skeleton _enemy) : base(_enemyBase, _statusMachine, _animBoolName)
+    public SkeletonAttackState(Enemy _enemyBase, EnemyStateMachine _stateMachine, string _animBoolName, Enemy_Skeleton _enemy) : base(_enemyBase, _stateMachine, _animBoolName)
     {
         enemy = _enemy;
     }
@@ -25,12 +25,14 @@ public class SkeletonAttackState : EnemyStatus
         // »Øµ÷£¬Í£Ö¹¹¥»÷¶¯»­
         if(triggerCalled)
         {
-            statusMachine.ChangeState(enemy.battleState);
+            stateMachine.ChangeState(enemy.battleState);
         }
     }
 
     public override void Exit()
     {
         base.Exit();
+
+        enemy.lastTimeAttacked = Time.time;
     }
 }

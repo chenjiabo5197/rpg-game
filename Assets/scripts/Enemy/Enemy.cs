@@ -12,11 +12,14 @@ public class Enemy : Entity
     public float moveSpeed;
     // 空闲时间，空闲时间计时结束后进入运动状态
     public float idleTime;
+    // 战斗时间，战斗时间计时结束后进入idle状态
+    public float battleTime;
 
     [Header("Attack Info")]
     public float attackDistance;
     public float attackCoolDown;
-    public float lastTimeAttacked;
+    // 前缀表明在inspector中隐藏该项目，虽然该项目为public属性
+    [HideInInspector]public float lastTimeAttacked;
 
     // 状态机
     public EnemyStateMachine stateMachine { get; private set; }

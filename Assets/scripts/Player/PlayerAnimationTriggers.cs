@@ -12,4 +12,19 @@ public class PlayerAnimationTriggers : MonoBehaviour
         // 一般是animator中的插件调用，但是player是animator的父节点，所以要先从父类中获取到player，然后再调用player函数，triggerCalled置为true，在playerstate中停止攻击动画
         player.AnimationTrigger();
     }
+
+    private void AttackTrigger()
+    {
+        // 获取此时在player攻击球范围内所有物体
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(player.attackCheck.position, player.attackCheckRadius);
+
+        foreach (var hit in colliders)
+        {
+            // 如果列表中物体是enemy，则调用enemy的damage函数，表示enemy收到伤害
+            if (hit.GetComponent<Enemy>() != null)
+            {
+                hit.GetComponent<Enemy>().Damage();
+            }
+        }
+    }
 }

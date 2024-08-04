@@ -13,10 +13,15 @@ public class Entity : MonoBehaviour
     public Animator anim { get; private set; }
     // 代表实体的刚体
     public Rigidbody2D rb { get; private set; }
+    // 实体被击中时的展示效果
+    public EntityFX fx { get; private set; }
 
     #endregion
     // 碰撞的变量
     [Header("Collision info")]
+    public Transform attackCheck;
+    // 攻击检测球的半径
+    public float attackCheckRadius;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckDistance;
     [SerializeField] private LayerMask whatIsGround;
@@ -37,14 +42,27 @@ public class Entity : MonoBehaviour
     // 在 Awake 方法之后被调用，用于在游戏对象启用后执行一次性初始化操作
     protected virtual void Start()
     {
+        // 忽略player与enemy两个图层的碰撞(全局级别)，player图层编号是6，enemy图层编号是7，想要撤销这个忽略碰撞需要再次调用该函数，传入相同层级，然后第三个参数为false即可
+        Physics2D.IgnoreLayerCollision(6, 7);
+
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        fx = GetComponentInChildren<EntityFX>();
     }
 
     // 游戏中每帧都会调用
     protected virtual void Update()
     {
         
+    }
+
+    // 伤害函数，player与enemy调用该函数，表明其收到了伤害
+    public virtual void Damage()
+    {
+        // 起一个协程，来展示被击中的效果
+        fx.StartCoroutine("FlashFX");
+
+        Debug.Log(gameObject.name + " was danaged");
     }
 
     #region Velocity
@@ -66,11 +84,15 @@ public class Entity : MonoBehaviour
     // 墙面检测
     public virtual bool IsWallDetected() => Physics2D.Raycast(wallCheck.position, Vector2.right * facingDir, wallCheckDistance, whatIsGround);
 
-    // 画辅助线，目的是为了看到地面检测和墙体检测
+    // 画辅助线
     protected virtual void OnDrawGizmos()
     {
+        // 地面检测线
         Gizmos.DrawLine(groundCheck.position, new Vector3(groundCheck.position.x, groundCheck.position.y - groundCheckDistance));
+        // 墙体检测线
         Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y));
+        // 画攻击检测球
+        Gizmos.DrawWireSphere(attackCheck.position, attackCheckRadius);
     }
     #endregion
 

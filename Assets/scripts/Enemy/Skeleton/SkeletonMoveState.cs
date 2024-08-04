@@ -22,7 +22,7 @@ public class SkeletonMoveState : SkeletonGroundState
         if (enemy.IsWallDetected() || !enemy.IsGroundDetected())
         {
             enemy.Flip();
-            statusMachine.ChangeState(enemy.idleState);
+            stateMachine.ChangeState(enemy.idleState);
         }
     }
 
