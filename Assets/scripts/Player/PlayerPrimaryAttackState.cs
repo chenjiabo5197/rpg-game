@@ -19,6 +19,9 @@ public class PlayerPrimaryAttackState : PlayerState
     {
         base.Enter();
 
+        // 用于修复当player一直向左时，切换为向右状态，此时按键攻击，player却向左攻击，原因是偶现攻击时player的facingDir为向左[bugfix]
+        xInput = 0;  
+
         // 超过连击时间或攻击次数大于攻击技能，重置计数器，下次攻击工attack1开始
         if (comboCounter > 2 || Time.time >= lastTimeAttacked + comboWindow)
         {

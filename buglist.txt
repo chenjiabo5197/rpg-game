@@ -1,0 +1,8 @@
+1、player从wallJumpState转化到idleState时，会出现player在墙上slide时，按下jump键转为wallJumpState时，player在空中但是出现几帧walldetected为true的现象，导致不能正常从wallJumpState切换为idleState，目前采取的方法是减少stateTimer时间解决
+
+2、player处于wallSlideState时，当player背后无wall时，player还是处于wallSlideState，应该从wallSlideState转为airState
+
+3、偶现当player跳上台阶后skeleton_enemy检测不到player时，enemy面对墙壁一直处于battleState，不能正常的从battleState转为idleState
+
+
+

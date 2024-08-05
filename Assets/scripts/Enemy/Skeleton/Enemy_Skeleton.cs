@@ -12,6 +12,8 @@ public class Enemy_Skeleton : Enemy
     public SkeletonMoveState moveState { get; private set; }
     public SkeletonBattleState battleState { get; private set; }
     public SkeletonAttackState attackState { get; private set; }
+
+    public SkeletonStunnedState stunnedState { get; private set; }
     #endregion
 
     protected override void Awake()
@@ -23,6 +25,8 @@ public class Enemy_Skeleton : Enemy
 
         battleState = new SkeletonBattleState(this, stateMachine, "Move", this);
         attackState = new SkeletonAttackState(this, stateMachine, "Attack", this);
+
+        stunnedState = new SkeletonStunnedState(this, stateMachine, "Stunned", this);
     }
 
     protected override void Start()
@@ -35,6 +39,11 @@ public class Enemy_Skeleton : Enemy
     protected override void Update()
     {
         base.Update();
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            stateMachine.ChangeState(stunnedState);
+        }
     }
 
     // Animator中调用该函数，停止攻击动画，animator只能调用到EnemySkeleton中的函数

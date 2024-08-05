@@ -17,6 +17,15 @@ public class Entity : MonoBehaviour
     public EntityFX fx { get; private set; }
 
     #endregion
+
+    [Header("Knockback Info")]
+    // 被击退的方向
+    [SerializeField] protected Vector2 knockbackDirection;
+    // 被击退维持的时间
+    [SerializeField] protected float knockbackDuration;
+    // 判断是否被击退
+    protected bool isKnocked;
+
     // 碰撞的变量
     [Header("Collision info")]
     public Transform attackCheck;
@@ -61,17 +70,46 @@ public class Entity : MonoBehaviour
     {
         // 起一个协程，来展示被击中的效果
         fx.StartCoroutine("FlashFX");
+        // 起一个协程，被击中后后退
+        StartCoroutine("HisKnockback");
 
         Debug.Log(gameObject.name + " was danaged");
     }
 
+    // 击退函数，协程调用该函数
+    protected virtual IEnumerator HisKnockback()
+    {
+        isKnocked  = true;
+
+        rb.velocity = new Vector2(knockbackDirection.x * -facingDir, knockbackDirection.y);
+
+        yield return new WaitForSeconds(knockbackDuration);
+
+        isKnocked = false;
+    }
+
     #region Velocity
-    // 将player的速度置为0
-    public void SetZeroVelocity() => rb.velocity = new Vector2(0, 0);
+    // 将速度置为0
+    public void SetZeroVelocity()
+    {
+        if (isKnocked)
+        {
+            // 处于被击退状态，不设置速度
+            return;
+        }
+
+        rb.velocity = new Vector2(0, 0);
+    }
 
     // 设置玩家的移动速度，包含x方向和y方向
     public void SetVelocity(float _xVelocity, float _yVelocity)
     {
+        if(isKnocked)
+        {
+            // 处于被击退状态，不设置速度
+            return;
+        }
+
         rb.velocity = new Vector2(_xVelocity, _yVelocity);
         FlipController(_xVelocity);
     }

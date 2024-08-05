@@ -8,6 +8,11 @@ public class Enemy : Entity
 {
     [SerializeField]protected LayerMask whatIsPlayer;
 
+    [Header("Stunned Info")]
+    // 处于眩晕状态的时间
+    public float stunDuration;
+    public Vector2 stunDirection;
+
     [Header("Move Info")]
     public float moveSpeed;
     // 空闲时间，空闲时间计时结束后进入运动状态

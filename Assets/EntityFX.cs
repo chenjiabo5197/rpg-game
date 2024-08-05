@@ -29,4 +29,26 @@ public class EntityFX : MonoBehaviour
 
         sr.material = originalMat;
     }
+
+    // 红白闪烁的效果
+    private void RedColorBlink()
+    {
+        if (sr.color != Color.white)
+        {
+            sr.color = Color.white;
+        }
+        else
+        {
+            sr.color = Color.red;
+        }
+    }
+
+    // 取消上面闪烁函数的效果
+    private void CancelRedBlink()
+    {
+        // 取消所有通过 Invoke 或 InvokeRepeating 设置的调用
+        CancelInvoke();
+
+        sr.color = Color.white;
+    }
 }
