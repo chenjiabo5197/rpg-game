@@ -40,12 +40,19 @@ public class Enemy_Skeleton : Enemy
     {
         base.Update();
 
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.U))
         {
             stateMachine.ChangeState(stunnedState);
         }
     }
 
-    // Animator中调用该函数，停止攻击动画，animator只能调用到EnemySkeleton中的函数
-    public void AnimationTrigger() => stateMachine.currentState.AnimationFinishTrigger();
+    public override bool CanBeStunned()
+    {
+        if (base.CanBeStunned())
+        {
+            stateMachine.ChangeState(stunnedState);
+            return true;
+        }
+        return false;
+    }
 }

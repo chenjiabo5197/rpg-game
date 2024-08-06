@@ -13,6 +13,7 @@ public class Enemy_SkeletonAnimationTriggers : MonoBehaviour
         enemy.AnimationTrigger();
     }
 
+    // 攻击回调函数，在动画的某一帧调用该函数，判断此时要攻击的对象在不在攻击范围内，若在内，则对其造成伤害
     private void AttackTrigger()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(enemy.attackCheck.position, enemy.attackCheckRadius);
@@ -26,4 +27,8 @@ public class Enemy_SkeletonAnimationTriggers : MonoBehaviour
             }
         }
     }
+
+    // 回调函数，分别调用定义在enemy中的函数，打开和关闭攻击窗口
+    private void OpenCounterWindow() => enemy.OpenCounterAttackWindow();
+    private void CloseCounterWindow() => enemy.CloseCounterAttackWindow();
 }

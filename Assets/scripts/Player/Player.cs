@@ -8,6 +8,8 @@ public class Player : Entity
     [Header("Attack details")]
     // 攻击中的移动,向上或向下
     public Vector2[] attackMovement;
+    // player的反击时间
+    public float counterAttackDuration = .2f;
 
     // 玩家目前状态，是否忙碌，目前用于停止连续攻击期间player的移动，因为每次player攻击结束后会进入idle状态，在idle中由于x轴有输入，所以会进入move状态，导致连击中会移动
     public bool isBusy { get; private set; }
@@ -41,6 +43,7 @@ public class Player : Entity
     public PlayerWallJumpState wallJumpState { get; private set; }
 
     public PlayerPrimaryAttackState primaryAttackState { get; private set; }
+    public PlayerCounterAttackState counterAttackState { get; private set; }
     #endregion
 
     // 在游戏对象被实例化时首先调用的方法
@@ -59,6 +62,7 @@ public class Player : Entity
         wallJumpState = new PlayerWallJumpState(this, stateMachine, "Jump");
 
         primaryAttackState = new PlayerPrimaryAttackState(this, stateMachine, "Attack");
+        counterAttackState = new PlayerCounterAttackState(this, stateMachine, "CounterAttack");
     }
 
     // 在 Awake 方法之后被调用，用于在游戏对象启用后执行一次性初始化操作
