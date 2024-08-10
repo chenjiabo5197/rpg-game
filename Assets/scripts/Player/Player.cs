@@ -103,12 +103,17 @@ public class Player : Entity
             return;
         }
 
-        dashUsageTimer -= Time.deltaTime;
-
         // 如果按下冲刺按键，且不在冲刺冷却时间内，则进入冲刺状态
-        if (Input.GetKeyDown(KeyCode.LeftShift) && dashUsageTimer < 0)
+        if(SkillManager.instance == null)
         {
-            dashUsageTimer = dashCoolDown;
+            Debug.Log("instance");
+        }
+        if(SkillManager.instance.dash == null)
+        {
+            Debug.Log("dash");
+        }
+        if (Input.GetKeyDown(KeyCode.LeftShift) && SkillManager.instance.dash.CanUseSkill())
+        {
             // 从横坐标获取此时的朝向
             dashDir = Input.GetAxisRaw("Horizontal");
             if(dashDir == 0)
