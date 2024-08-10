@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class SkillManager : MonoBehaviour
 {
+    // SkillManager的单例对象
     public static SkillManager instance;
-    public DashSkill dash;
+
+    public DashSkill dash { get; private set; }
+    // clone技能，复制player对象
+    public CloneSkill clone { get; private set; }
 
     private void Awake()
     {
@@ -22,5 +26,6 @@ public class SkillManager : MonoBehaviour
     private void Start()
     {
         dash = GetComponent<DashSkill>();
+        clone = GetComponent<CloneSkill>();
     }
 }
