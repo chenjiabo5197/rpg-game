@@ -22,25 +22,37 @@ public class PlayerGroundedState : PlayerState
     {
         base.Update();
 
+        if(Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            // 鼠标右键，切换到aimSword
+            stateMachine.ChangeState(player.aimSwordState);
+            Debug.Log("player PlayerGroundedState change to aimSwordState");
+        }
+
         if(Input.GetKeyDown(KeyCode.Q))
         {
             stateMachine.ChangeState(player.counterAttackState);
+            Debug.Log("player PlayerGroundedState change to counterAttackState");
         }
 
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
+            // 鼠标左键，切换到攻击状态
             stateMachine.ChangeState(player.primaryAttackState);
+            Debug.Log("player PlayerGroundedState change to primaryAttackState");
         }
 
         if(!player.IsGroundDetected())
         {
             stateMachine.ChangeState(player.airState);
+            Debug.Log("player PlayerGroundedState change to airState");
         }
 
         // player.IsGroundDetected()确保player只有在地面的时候才可以跳，站在地面其他物体上不能跳
         if (Input.GetKeyDown(KeyCode.Space) && player.IsGroundDetected())
         {
             stateMachine.ChangeState(player.jumpState);
+            Debug.Log("player PlayerGroundedState change to jumpState");
         }
     }
 }

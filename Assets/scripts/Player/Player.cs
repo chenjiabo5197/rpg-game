@@ -35,6 +35,7 @@ public class Player : Entity
     public SkillManager skill { get; private set; }
 
     #region States
+    // player的各种状态
     public PlayerStateMachine stateMachine { get; private set; }
 
     public PlayerIdleState idleState { get; private set; }
@@ -47,6 +48,9 @@ public class Player : Entity
 
     public PlayerPrimaryAttackState primaryAttackState { get; private set; }
     public PlayerCounterAttackState counterAttackState { get; private set; }
+
+    public PlayerAimSwordState aimSwordState { get; private set; }
+    public PlayerCatchSwordState catchSwordState { get; private set; }
     #endregion
 
     // 在游戏对象被实例化时首先调用的方法
@@ -66,6 +70,9 @@ public class Player : Entity
 
         primaryAttackState = new PlayerPrimaryAttackState(this, stateMachine, "Attack");
         counterAttackState = new PlayerCounterAttackState(this, stateMachine, "CounterAttack");
+
+        aimSwordState = new PlayerAimSwordState(this, stateMachine, "AimSword");
+        catchSwordState = new PlayerCatchSwordState(this, stateMachine, "CatchSword");
     }
 
     // 在 Awake 方法之后被调用，用于在游戏对象启用后执行一次性初始化操作

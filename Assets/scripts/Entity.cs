@@ -45,18 +45,18 @@ public class Entity : MonoBehaviour
     // 在游戏对象被实例化时首先调用的方法
     protected virtual void Awake()
     {
-        
-    }
-
-    // 在 Awake 方法之后被调用，用于在游戏对象启用后执行一次性初始化操作
-    protected virtual void Start()
-    {
         // 忽略player与enemy两个图层的碰撞(全局级别)，player图层编号是6，enemy图层编号是7，想要撤销这个忽略碰撞需要再次调用该函数，传入相同层级，然后第三个参数为false即可
         Physics2D.IgnoreLayerCollision(6, 7);
 
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
         fx = GetComponentInChildren<EntityFX>();
+    }
+
+    // 在 Awake 方法之后被调用，用于在游戏对象启用后执行一次性初始化操作
+    protected virtual void Start()
+    {
+        
     }
 
     // 游戏中每帧都会调用
