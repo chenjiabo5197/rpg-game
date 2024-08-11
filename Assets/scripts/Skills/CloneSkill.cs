@@ -13,6 +13,7 @@ public class CloneSkill : Skill
         GameObject newClone = Instantiate(clonePrefab);
 
         // 设置clone体的坐标，通过获取CloneSkillController脚本中的函数
+        // 此处注意由于要实例化CloneSkillController对象，所以CloneSkillController脚本必须在clone对象上，否则一直会空指针
         newClone.GetComponent<CloneSkillController>().SetupClone(_clonePosition);
     }
 }

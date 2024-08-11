@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 9011857536699042779}
   - component: {fileID: 9018864677078108212}
   - component: {fileID: 3711977882134240463}
+  - component: {fileID: 7600544014092085443}
   m_Layer: 6
   m_Name: Clone
   m_TagString: Untagged
@@ -106,3 +107,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7600544014092085443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8739711658989702997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 564e57c947cc5fc4ab045bd82ebc9ed1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
