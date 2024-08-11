@@ -31,6 +31,9 @@ public class Player : Entity
     // 冲刺方向
     public float dashDir { get; private set; }
 
+    // SkillManager的实例化对象，后续访问该对象不必通过SkillManager.instance
+    public SkillManager skill { get; private set; }
+
     #region States
     public PlayerStateMachine stateMachine { get; private set; }
 
@@ -69,6 +72,8 @@ public class Player : Entity
     protected override void Start()
     {
         base.Start();
+
+        skill = SkillManager.instance;
 
         stateMachine.Initialize(idleState);
     }

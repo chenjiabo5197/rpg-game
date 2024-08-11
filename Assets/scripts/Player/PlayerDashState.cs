@@ -13,8 +13,9 @@ public class PlayerDashState : PlayerState
         base.Enter();
 
         // 创建一个player对象的clone体
-        SkillManager.instance.clone.CreateClone(player.transform);
-        
+        //SkillManager.instance.clone.CreateClone(player.transform);
+        player.skill.clone.CreateClone(player.transform);
+
         stateTimer = player.dashDuration;
     }
 
