@@ -1,10 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
+using System;
 using UnityEngine;
+
+public enum SwordType
+{
+    Regular,
+    Bounce,
+    Pierce,
+    Spin
+}
 
 public class SwordSkill : Skill
 {
+    public SwordType swordType = SwordType.Regular;
+
+    [Header("Bounce info")]
+    // 剑反弹最多次数
+    [SerializeField] private int bounceAmount;
+    // 反弹的剑的重力
+    [SerializeField] private float bounceGravity;
+    // 剑的反弹速度
+    [SerializeField] private float bounceSpeed;
+
+    [Header("Pierce info")]
+    [SerializeField] private int pierceAmount;
+    [SerializeField] private float pierceGravity;
+
+    [Header("Spin info")]
+    [SerializeField] private float hitCooldown = .35f;
+    [SerializeField] private float maxTravelDistance = 7;
+    [SerializeField] private float spinDuration = 2;
+    [SerializeField] private float spinGravity = 1;
+    [SerializeField] private float returnSpeed;
+
     [Header("Skill Info")]
     // 剑的预制体，用于渲染剑扔出去后空中飞行
     [SerializeField] private GameObject swordPrefab;
@@ -12,6 +39,9 @@ public class SwordSkill : Skill
     [SerializeField] private Vector2 launchForce;
     // 扔出去的剑所承受的重力
     [SerializeField] private float swordGravity;
+    // 扔出去的剑击中enemy后冻结enemy的时长
+    [SerializeField] private float freezeTimeDuration;
+
     // 最终扔剑出去的方向
     private Vector2 finalDir;
 
@@ -32,6 +62,24 @@ public class SwordSkill : Skill
         base.Start();
 
         GenerateDots();
+
+        SetupGravity();
+    }
+
+    private void SetupGravity()
+    {
+        if (swordType == SwordType.Bounce)
+        {
+            swordGravity = bounceGravity;
+        }
+        else if (swordType == SwordType.Pierce)
+        {
+            swordGravity = pierceGravity;
+        }
+        else if (swordType == SwordType.Spin)
+        {
+            swordGravity = spinGravity;
+        }
     }
 
     protected override void Update()
@@ -46,7 +94,7 @@ public class SwordSkill : Skill
 
         if (Input.GetKey(KeyCode.Mouse1))
         {
-            for (int i = 0; i< dots.Length; i++)
+            for (int i = 0; i < dots.Length; i++)
             {
                 dots[i].transform.position = DotsPosition(i * spaceBetweenDots);
             }
@@ -59,13 +107,28 @@ public class SwordSkill : Skill
         GameObject newSword = Instantiate(swordPrefab, player.transform.position, transform.rotation);
         // 在实例化对象下获取控制插件
         SwordSkillController newSwordController = newSword.GetComponent<SwordSkillController>();
+
+        if (swordType == SwordType.Bounce)
+        {
+            newSwordController.SetupBounce(true, bounceAmount, bounceSpeed);
+        }
+        else if (swordType == SwordType.Pierce)
+        {
+            newSwordController.SetupPierce(pierceAmount);
+        }
+        else if (swordType == SwordType.Spin)
+        {
+            newSwordController.SetupSpin(true, maxTravelDistance, spinDuration, hitCooldown);
+        }
+
         // 设置剑的发射方向和重力
-        newSwordController.SetupSword(finalDir, swordGravity, player);
+        newSwordController.SetupSword(finalDir, swordGravity, player, freezeTimeDuration, returnSpeed);
         player.AssignNewSword(newSword);
         // 剑已经发射出去了，设置瞄准用的点不可见
         DotsActive(false);
     }
 
+    #region Aim region
     // 获取瞄准的方向
     public Vector2 AimDirection()
     {
@@ -105,4 +168,5 @@ public class SwordSkill : Skill
             AimDirection().normalized.y * launchForce.y) * t + .5f * (Physics2D.gravity * swordGravity) * (t * t);
         return position;
     }
+    #endregion
 }

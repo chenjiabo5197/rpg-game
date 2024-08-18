@@ -47,6 +47,7 @@ public class Entity : MonoBehaviour
     {
         // 忽略player与enemy两个图层的碰撞(全局级别)，player图层编号是6，enemy图层编号是7，想要撤销这个忽略碰撞需要再次调用该函数，传入相同层级，然后第三个参数为false即可
         Physics2D.IgnoreLayerCollision(6, 7);
+        Physics2D.IgnoreLayerCollision(7, 7);
         // sword图层编号是8
         Physics2D.IgnoreLayerCollision(6, 8);
 

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 // skeleton类enemy的基类，继承enemy
@@ -19,7 +17,7 @@ public class Enemy_Skeleton : Enemy
     protected override void Awake()
     {
         base.Awake();
-        
+
         idleState = new SkeletonIdleState(this, stateMachine, "Idle", this);
         moveState = new SkeletonMoveState(this, stateMachine, "Move", this);
 

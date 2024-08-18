@@ -1,12 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 // 多个不同敌人的基类，包含skeleton
 public class Enemy : Entity
 {
-    [SerializeField]protected LayerMask whatIsPlayer;
+    [SerializeField] protected LayerMask whatIsPlayer;
 
     [Header("Stunned Info")]
     // 处于眩晕状态的时间
@@ -23,12 +21,14 @@ public class Enemy : Entity
     public float idleTime;
     // 战斗时间，战斗时间计时结束后进入idle状态
     public float battleTime;
+    // 默认的移动速度
+    private float defaultMoveSpeed;
 
     [Header("Attack Info")]
     public float attackDistance;
     public float attackCoolDown;
     // 前缀表明在inspector中隐藏该项目，虽然该项目为public属性
-    [HideInInspector]public float lastTimeAttacked;
+    [HideInInspector] public float lastTimeAttacked;
 
     // 状态机
     public EnemyStateMachine stateMachine { get; private set; }
@@ -39,6 +39,8 @@ public class Enemy : Entity
         base.Awake();
 
         stateMachine = new EnemyStateMachine();
+
+        defaultMoveSpeed = moveSpeed;
     }
 
     protected override void Start()
@@ -55,6 +57,30 @@ public class Enemy : Entity
 
     }
 
+    public virtual void FreezeTime(bool _timeFrozen)
+    {
+        if (_timeFrozen)
+        {
+            moveSpeed = 0;
+            anim.speed = 0;
+        }
+        else
+        {
+            moveSpeed = defaultMoveSpeed;
+            anim.speed = 1;
+        }
+    }
+
+    protected virtual IEnumerator FreezeTimerFor(float _seconds)
+    {
+        FreezeTime(true);
+
+        yield return new WaitForSeconds(_seconds);
+
+        FreezeTime(false);
+    }
+
+    #region Counter Attack Window
     // 打开攻击窗口，展示counterImage
     public virtual void OpenCounterAttackWindow()
     {
@@ -69,6 +95,7 @@ public class Enemy : Entity
         // 隐藏counterImage
         counterImage.SetActive(false);
     }
+    #endregion
 
     // 判断enemy是否能被眩晕,enemy处于打开攻击窗口阶段是可以被眩晕的，其余时间点不可被眩晕
     public virtual bool CanBeStunned()

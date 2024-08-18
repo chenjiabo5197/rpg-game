@@ -18,6 +18,8 @@ public class Player : Entity
     public float moveSpeed = 8f;
     // player向上跳起速度
     public float jumpForce;
+    // player 在回收剑时剑带来的冲击力
+    public float swordReturnImpact;
 
     [Header("Dash Info")]
     // 冲刺冷却时间
@@ -34,7 +36,7 @@ public class Player : Entity
     // SkillManager的实例化对象，后续访问该对象不必通过SkillManager.instance
     public SkillManager skill { get; private set; }
     // 定义sword对象，防止扔出去多把剑
-    public GameObject sword; //{ get; private set; }
+    public GameObject sword { get; private set; }
 
     #region States
     // player的各种状态
@@ -103,8 +105,10 @@ public class Player : Entity
         sword = _newSword;
     }
 
-    public void ClearTheSword()
+    public void CatchTheSword()
     {
+        stateMachine.ChangeState(catchSwordState);
+        Debug.Log("change to catchSwordState");
         Destroy(sword);
     }
 

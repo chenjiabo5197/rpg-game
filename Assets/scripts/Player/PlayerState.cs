@@ -18,7 +18,7 @@ public class PlayerState
     private string animBoolName;
     // 定时器，用于状态切换使用（冲刺、walljump）
     protected float stateTimer;
-    // 是否播放攻击动画
+    // 是否播放完动画，一般在要播放的动画的最后一帧调用函数改变该布尔值
     protected bool triggerCalled;
 
     public PlayerState(Player _player, PlayerStateMachine _stateMachine, string _animBoolName)
