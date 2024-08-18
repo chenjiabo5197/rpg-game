@@ -11,6 +11,8 @@ public class PlayerAimSwordState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        // 在瞄准状态时，设置瞄准用的点可见
+        player.skill.sword.DotsActive(true);
     }
 
     public override void Exit()
@@ -27,5 +29,17 @@ public class PlayerAimSwordState : PlayerState
             stateMachine.ChangeState(player.idleState);
             Debug.Log("player PlayerAimSwordState change to idleState");
         }
+
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        if(player.transform.position.x > mousePosition.x && player.facingDir == 1)
+        {
+            player.Flip();
+        }
+        else if(player.transform.position.x < mousePosition.x && player.facingDir == -1)
+        {
+            player.Flip();
+        }
+
     }
 }

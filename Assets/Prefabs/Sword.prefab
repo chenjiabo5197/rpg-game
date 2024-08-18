@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3957809356940993370}
   - component: {fileID: 8563760519224215176}
   - component: {fileID: 1789988170697327922}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SwordObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,13 +26,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3200489585743222516}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.8598936, w: 0.51047325}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1601227136028038080}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 118.609}
 --- !u!212 &8563760519224215176
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 1872294189
   m_SortingLayer: 2
   m_SortingOrder: -1
-  m_Sprite: {fileID: 1633007794, guid: f6b296ee51c42564abe9c05f1c502ecd, type: 3}
+  m_Sprite: {fileID: -2004053239, guid: f6b296ee51c42564abe9c05f1c502ecd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -118,13 +118,13 @@ GameObject:
   - component: {fileID: 4411802518040498141}
   - component: {fileID: 7195972261991869722}
   - component: {fileID: 3089809932249515916}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sword
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1601227136028038080
 Transform:
   m_ObjectHideFlags: 0
@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c6c35e75c6b17a4688cf98b71686fdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  returnSpeed: 12
 --- !u!58 &7195972261991869722
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -182,12 +183,12 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.02430886, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.3457319
 --- !u!50 &3089809932249515916
 Rigidbody2D:
   serializedVersion: 4

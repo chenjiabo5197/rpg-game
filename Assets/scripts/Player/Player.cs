@@ -33,6 +33,8 @@ public class Player : Entity
 
     // SkillManager的实例化对象，后续访问该对象不必通过SkillManager.instance
     public SkillManager skill { get; private set; }
+    // 定义sword对象，防止扔出去多把剑
+    public GameObject sword; //{ get; private set; }
 
     #region States
     // player的各种状态
@@ -93,6 +95,17 @@ public class Player : Entity
         stateMachine.currentState.Update();
 
         CheckForDashInput();
+    }
+
+    // 分配与清楚sword对象
+    public void AssignNewSword(GameObject _newSword)
+    {
+        sword = _newSword;
+    }
+
+    public void ClearTheSword()
+    {
+        Destroy(sword);
     }
 
     // 传入要等待的秒数，进入函数后，先将isBusy置为true，等待传入参数的秒数后，再将isBusy置为false，类似一个多线程的函数，等待秒数在多线程中计数，计数结束后，置为false

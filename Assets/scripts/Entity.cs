@@ -37,7 +37,7 @@ public class Entity : MonoBehaviour
     [SerializeField] protected Transform wallCheck;
     [SerializeField] private float wallCheckDistance;
 
-    // 朝向的方向，默认朝向右方
+    // 朝向的方向，默认朝向右方，右方值为1，左方值为-1
     public int facingDir { get; private set; } = 1;
     // 是否面朝右方，默认为true
     protected bool facingRight = true;
@@ -47,6 +47,8 @@ public class Entity : MonoBehaviour
     {
         // 忽略player与enemy两个图层的碰撞(全局级别)，player图层编号是6，enemy图层编号是7，想要撤销这个忽略碰撞需要再次调用该函数，传入相同层级，然后第三个参数为false即可
         Physics2D.IgnoreLayerCollision(6, 7);
+        // sword图层编号是8
+        Physics2D.IgnoreLayerCollision(6, 8);
 
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();

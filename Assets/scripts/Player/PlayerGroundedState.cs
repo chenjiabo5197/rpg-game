@@ -22,7 +22,8 @@ public class PlayerGroundedState : PlayerState
     {
         base.Update();
 
-        if(Input.GetKeyDown(KeyCode.Mouse1))
+        // 判断player的sword状态
+        if(Input.GetKeyDown(KeyCode.Mouse1) && HasNoSword())
         {
             // 鼠标右键，切换到aimSword
             stateMachine.ChangeState(player.aimSwordState);
@@ -54,5 +55,16 @@ public class PlayerGroundedState : PlayerState
             stateMachine.ChangeState(player.jumpState);
             Debug.Log("player PlayerGroundedState change to jumpState");
         }
+    }
+
+    private bool HasNoSword()
+    {
+        if(!player.sword)
+        {
+            return true;
+        }
+        // 如果剑不在手上，则回收剑
+        player.sword.GetComponent<SwordSkillController>().ReturnSword();
+        return false;
     }
 }

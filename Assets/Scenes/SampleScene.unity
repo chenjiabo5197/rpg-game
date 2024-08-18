@@ -1318,10 +1318,11 @@ MonoBehaviour:
   - {x: 4, y: 1.5}
   counterAttackDuration: 0.2
   moveSpeed: 8
-  jumpForce: 12
+  jumpForce: 14
   dashCoolDown: 1
   dashSpeed: 25
   dashDuration: 0.2
+  sword: {fileID: 0}
 --- !u!4 &1418551558
 Transform:
   m_ObjectHideFlags: 0
@@ -1339,6 +1340,7 @@ Transform:
   - {fileID: 496309557}
   - {fileID: 1022834654}
   - {fileID: 1893188513}
+  - {fileID: 1546759946}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &1418551559
@@ -1562,6 +1564,37 @@ Transform:
   - {fileID: 1813075065}
   - {fileID: 1895410248}
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1546759945
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1546759946}
+  m_Layer: 6
+  m_Name: AimDotParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1546759946
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546759945}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1418551558}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1681048577
 GameObject:
@@ -3562,7 +3595,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.27195948}
+  m_Offset: {x: 0.048365965, y: -0.27195948}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -3573,7 +3606,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.543919}
+  m_Size: {x: 0.82035506, y: 1.543919}
   m_EdgeRadius: 0
 --- !u!50 &1870991965
 Rigidbody2D:
@@ -4073,70 +4106,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cooldown: 0
-  swordPrefab: {fileID: 9026687875097557582, guid: 5ad0d8a4268b47349885a9a7592ab7d3, type: 3}
-  launchDir: {x: 5, y: 15}
-  swordGravity: 4
---- !u!1001 &3847439156737024462
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1601227136028038080, guid: 5ad0d8a4268b47349885a9a7592ab7d3, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.13
-      objectReference: {fileID: 0}
-    - target: {fileID: 1601227136028038080, guid: 5ad0d8a4268b47349885a9a7592ab7d3, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 1601227136028038080, guid: 5ad0d8a4268b47349885a9a7592ab7d3, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1601227136028038080, guid: 5ad0d8a4268b47349885a9a7592ab7d3, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1601227136028038080, guid: 5ad0d8a4268b47349885a9a7592ab7d3, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1601227136028038080, guid: 5ad0d8a4268b47349885a9a7592ab7d3, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1601227136028038080, guid: 5ad0d8a4268b47349885a9a7592ab7d3, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1601227136028038080, guid: 5ad0d8a4268b47349885a9a7592ab7d3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1601227136028038080, guid: 5ad0d8a4268b47349885a9a7592ab7d3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1601227136028038080, guid: 5ad0d8a4268b47349885a9a7592ab7d3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9026687875097557582, guid: 5ad0d8a4268b47349885a9a7592ab7d3, type: 3}
-      propertyPath: m_Name
-      value: Sword
-      objectReference: {fileID: 0}
-    - target: {fileID: 9026687875097557582, guid: 5ad0d8a4268b47349885a9a7592ab7d3, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 5ad0d8a4268b47349885a9a7592ab7d3, type: 3}
+  swordPrefab: {fileID: 0}
+  launchForce: {x: 35, y: 25}
+  swordGravity: 4.5
+  numberOfDots: 20
+  spaceBetweenDots: 0.07
+  dotPrefab: {fileID: 0}
+  dotsParents: {fileID: 1546759946}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -4148,4 +4124,3 @@ SceneRoots:
   - {fileID: 1870991963}
   - {fileID: 1681048579}
   - {fileID: 2012683496}
-  - {fileID: 3847439156737024462}

@@ -66,6 +66,7 @@ public class Enemy : Entity
     public virtual void CloseCounterAttackWindow()
     {
         canBeStunned = false;
+        // Òþ²ØcounterImage
         counterImage.SetActive(false);
     }
 
