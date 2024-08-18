@@ -16,6 +16,11 @@ public class SwordSkillController : MonoBehaviour
     // 剑是否回收中
     private bool isReturning;
 
+    /*
+     * 所有预制件必须设置为enable状态，否则其实例化后不会执行后awake、start等方法，此处调用会报空指针异常等错误
+     * 预制件可以在samplescene中删除，但是在prefabs文件夹中的预制件必须是enable状态
+     */
+
     private void Awake()
     {
         // 注意，此处放到start里会出现空指针异常
