@@ -26,7 +26,7 @@ public class SwordSkillController : MonoBehaviour
 
     private void Start()
     {
-        
+
     }
 
     public void Update()
@@ -51,10 +51,7 @@ public class SwordSkillController : MonoBehaviour
     public void SetupSword(Vector2 _dir, float _gravityScale, Player _player)
     {
         player = _player;
-        if(rb == null)
-        {
-            Debug.Log("rb is null");
-        }
+
         rb.velocity = _dir;
         rb.gravityScale = _gravityScale;
 
