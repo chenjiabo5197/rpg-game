@@ -14,7 +14,7 @@ public class PlayerDashState : PlayerState
 
         // 创建一个player对象的clone体
         //SkillManager.instance.clone.CreateClone(player.transform);
-        player.skill.clone.CreateClone(player.transform);
+        player.skill.clone.CreateClone(player.transform, Vector3.zero);
 
         stateTimer = player.dashDuration;
     }
@@ -29,7 +29,7 @@ public class PlayerDashState : PlayerState
     public override void Update()
     {
         base.Update();
-
+        
         if(!player.IsGroundDetected() && player.IsWallDetected())
         {
             stateMachine.ChangeState(player.wallSlideState);
