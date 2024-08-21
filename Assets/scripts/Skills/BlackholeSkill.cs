@@ -22,7 +22,7 @@ public class BlackholeSkill : Skill
     {
         base.UseSkill();
 
-        GameObject newBlackhole = Instantiate(blackholePrefab);
+        GameObject newBlackhole = Instantiate(blackholePrefab, player.transform.position, Quaternion.identity);
         BlackholeSkillController blackholeSkillController = newBlackhole.GetComponent<BlackholeSkillController>();
         blackholeSkillController.SetupBlackhole(maxSize, growSpeed, shrinkSpeed, amountOfAttacks, cloneCooldown);
     }

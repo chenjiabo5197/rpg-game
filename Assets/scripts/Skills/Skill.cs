@@ -13,12 +13,12 @@ public class Skill : MonoBehaviour
 
     private void Awake()
     {
-        player = PlayerManager.instance.player;
+        
     }
 
     protected virtual void Start()
     {
-        
+        player = PlayerManager.instance.player;
     }
 
     protected virtual void Update()

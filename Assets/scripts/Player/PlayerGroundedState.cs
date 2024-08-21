@@ -22,6 +22,12 @@ public class PlayerGroundedState : PlayerState
     {
         base.Update();
 
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            stateMachine.ChangeState(player.blackholeState);
+            Debug.Log("player PlayerGroundedState change to blackholeState");
+        }
+
         // ÅÐ¶ÏplayerµÄsword×´Ì¬
         if(Input.GetKeyDown(KeyCode.Mouse1) && HasNoSword())
         {

@@ -11,6 +11,7 @@ public class SkillManager : MonoBehaviour
     // clone技能，复制player对象
     public CloneSkill clone { get; private set; }
     public SwordSkill sword { get; private set; }
+    public BlackholeSkill blackhole { get; private set; }
 
     private void Awake()
     {
@@ -29,5 +30,6 @@ public class SkillManager : MonoBehaviour
         dash = GetComponent<DashSkill>();
         clone = GetComponent<CloneSkill>();
         sword = GetComponent<SwordSkill>();
+        blackhole = GetComponent<BlackholeSkill>();
     }
 }

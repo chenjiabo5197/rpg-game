@@ -15,7 +15,7 @@ public class BlackholeSkillController : MonoBehaviour
     // blackhole 收缩的速度
     private float shrinkSpeed;
     private bool canGrow = true;
-    private bool canShrink;
+    private bool canShrink = false;
 
     [Header("Clone Attack")]
     private bool canCreateHotKey = true;
@@ -74,6 +74,8 @@ public class BlackholeSkillController : MonoBehaviour
         DestroyHotKeys();
         cloneAttackReleased = true;
         canCreateHotKey = false;
+
+        PlayerManager.instance.player.MakeTransparent(true);
     }
 
     private void CloneAttackLogic()
@@ -102,10 +104,16 @@ public class BlackholeSkillController : MonoBehaviour
 
             if (amountOfAttacks <= 0)
             {
-                canShrink = true;  // 攻击释放完后，blackhole自动进入收缩状态
-                cloneAttackReleased = false;
+                Invoke("FinishBlackholeAbility", 1f);
             }
         }
+    }
+
+    private void FinishBlackholeAbility()
+    {
+        PlayerManager.instance.player.ExitBlackholeAbility();
+        canShrink = true;  // 攻击释放完后，blackhole自动进入收缩状态
+        cloneAttackReleased = false;
     }
 
     private void DestroyHotKeys()

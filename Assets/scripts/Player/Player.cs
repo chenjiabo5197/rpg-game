@@ -55,6 +55,7 @@ public class Player : Entity
 
     public PlayerAimSwordState aimSwordState { get; private set; }
     public PlayerCatchSwordState catchSwordState { get; private set; }
+    public PlayerBlackholeState blackholeState { get; private set; }
     #endregion
 
     // 在游戏对象被实例化时首先调用的方法
@@ -77,6 +78,7 @@ public class Player : Entity
 
         aimSwordState = new PlayerAimSwordState(this, stateMachine, "AimSword");
         catchSwordState = new PlayerCatchSwordState(this, stateMachine, "CatchSword");
+        blackholeState = new PlayerBlackholeState(this, stateMachine, "Jump");
     }
 
     // 在 Awake 方法之后被调用，用于在游戏对象启用后执行一次性初始化操作
@@ -110,6 +112,11 @@ public class Player : Entity
         stateMachine.ChangeState(catchSwordState);
         Debug.Log("change to catchSwordState");
         Destroy(sword);
+    }
+
+    public void ExitBlackholeAbility()
+    {
+        stateMachine.ChangeState(airState);
     }
 
     // 传入要等待的秒数，进入函数后，先将isBusy置为true，等待传入参数的秒数后，再将isBusy置为false，类似一个多线程的函数，等待秒数在多线程中计数，计数结束后，置为false

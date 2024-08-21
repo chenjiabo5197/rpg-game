@@ -1,4 +1,4 @@
-using System.Collections;
+ using System.Collections;
 using System.Collections.Generic;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEditor;
@@ -15,6 +15,7 @@ public class Entity : MonoBehaviour
     public Rigidbody2D rb { get; private set; }
     // 实体被击中时的展示效果
     public EntityFX fx { get; private set; }
+    public SpriteRenderer sr { get; private set; }
 
     #endregion
 
@@ -53,7 +54,8 @@ public class Entity : MonoBehaviour
 
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        fx = GetComponentInChildren<EntityFX>();
+        fx = GetComponent<EntityFX>();
+        sr = GetComponentInChildren<SpriteRenderer>();  
     }
 
     // 在 Awake 方法之后被调用，用于在游戏对象启用后执行一次性初始化操作
@@ -164,4 +166,16 @@ public class Entity : MonoBehaviour
         }
     }
     #endregion
+
+    public void MakeTransparent(bool _transparent)
+    {
+        if (_transparent)
+        {
+            sr.color = Color.clear;
+        }
+        else
+        {
+            sr.color = Color.white;
+        }
+    }
 }
