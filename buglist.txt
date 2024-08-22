@@ -4,5 +4,9 @@
 
 3、偶现当player跳上台阶后skeleton_enemy检测不到player时，enemy面对墙壁一直处于battleState，不能正常的从battleState转为idleState
 
+4、player在blackhole下可以冲刺，预期不能
+
+
+
 
 

@@ -43,7 +43,12 @@ public class PlayerBlackholeState : PlayerState
                 }
             }
         }
-        // 退出当前状态，当释放完技能后，在blackholeskillcontroller中调用函数退出
+        
+        if(player.skill.blackhole.SkillCompleted())
+        {
+            Debug.Log("from blackholeState change to airState");
+            stateMachine.ChangeState(player.airState);
+        }
     }
 
     public override void Exit()
