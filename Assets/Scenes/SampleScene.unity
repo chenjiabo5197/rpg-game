@@ -5995,6 +5995,7 @@ GameObject:
   - component: {fileID: 2012683498}
   - component: {fileID: 2012683499}
   - component: {fileID: 2012683500}
+  - component: {fileID: 2012683501}
   m_Layer: 0
   m_Name: SkillManager
   m_TagString: Untagged
@@ -6058,6 +6059,12 @@ MonoBehaviour:
   clonePrefab: {fileID: 8739711658989702997, guid: 284c53f9b9f4743459e1bc12ba6cde75, type: 3}
   cloneDuration: 1.5
   canAttack: 1
+  createCloneOnDashStart: 1
+  createCloneOnDashOver: 1
+  canCreateCloneOnCounterAttack: 1
+  canDuplicateClone: 1
+  chanceToDuplicate: 0
+  crystalInsteadOfClone: 1
 --- !u!114 &2012683499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6072,7 +6079,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cooldown: 0
   swordType: 0
-  bounceAmount: 0
+  bounceAmount: 5
   bounceGravity: 5
   bounceSpeed: 20
   pierceAmount: 2
@@ -6110,6 +6117,30 @@ MonoBehaviour:
   maxSize: 15
   growSpeed: 3
   shrinkSpeed: 6
+--- !u!114 &2012683501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012683493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cb74cb4a94387748825a8206fbdabdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldown: 0
+  crystalPrefab: {fileID: 7290918200185369084, guid: f63cef004135c32478e90ccbb540ae78, type: 3}
+  crystalDuration: 1.5
+  cloneInsteadOfCrystal: 1
+  canExplode: 1
+  canMoveToEnemy: 1
+  moveSpeed: 4
+  canUseMultiStacks: 0
+  amountOfStacks: 3
+  multiStackCooldown: 4
+  useTimeWindow: 2.5
+  crystalLeft: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

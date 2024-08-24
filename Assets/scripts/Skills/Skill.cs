@@ -43,4 +43,30 @@ public class Skill : MonoBehaviour
     {
         Debug.Log("use skill");
     }
+
+    // 获取距离_checkTransform最近的enemy
+    protected virtual Transform FindClosestEnemy(Transform _checkTransform)
+    {
+        Transform closestEnemy = null;
+        // 获取此时在25范围内所有物体
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(_checkTransform.position, 25);
+        // 正无穷大
+        float closestDistance = Mathf.Infinity;
+
+        foreach (var hit in colliders)
+        {
+            // 循环获取离clone体最近的enemy对象
+            if (hit.GetComponent<Enemy>() != null)
+            {
+                float distanceToEnemy = Vector2.Distance(_checkTransform.position, hit.transform.position);
+
+                if (distanceToEnemy < closestDistance)
+                {
+                    closestEnemy = hit.transform;
+                    closestDistance = distanceToEnemy;
+                }
+            }
+        }
+        return closestEnemy;
+    }
 }

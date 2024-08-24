@@ -99,6 +99,11 @@ public class Player : Entity
         stateMachine.currentState.Update();
 
         CheckForDashInput();
+
+        if(Input.GetKeyDown(KeyCode.F))
+        {
+            skill.crystal.CanUseSkill();
+        }
     }
 
     // 分配与清楚sword对象
@@ -140,14 +145,6 @@ public class Player : Entity
         }
 
         // 如果按下冲刺按键，且不在冲刺冷却时间内，则进入冲刺状态
-        if(SkillManager.instance == null)
-        {
-            Debug.Log("instance");
-        }
-        if(SkillManager.instance.dash == null)
-        {
-            Debug.Log("dash");
-        }
         if (Input.GetKeyDown(KeyCode.LeftShift) && SkillManager.instance.dash.CanUseSkill())
         {
             // 从横坐标获取此时的朝向

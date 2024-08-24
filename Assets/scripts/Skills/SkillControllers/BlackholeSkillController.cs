@@ -42,6 +42,12 @@ public class BlackholeSkillController : MonoBehaviour
         amountOfAttacks = _amountOfAttacks;
         cloneAttackCooldown = _cloneAttackCooldown;
         blackholeTimer = _blackholeDuration;
+
+        if (SkillManager.instance.clone.crystalInsteadOfClone)
+        {
+            // 若释放crystal攻击，则player不需要消失
+            playerCanDisapear = false;
+        }
     }
 
     private void Update()
@@ -125,8 +131,17 @@ public class BlackholeSkillController : MonoBehaviour
             {
                 xOffset = -2;
             }
-            // 增加偏移量让clone出现的位置与enemy的位置有差异，二者不重叠
-            SkillManager.instance.clone.CreateClone(targets[randomIndex], new Vector3(xOffset, 0));
+            if(SkillManager.instance.clone.crystalInsteadOfClone)
+            {
+                // 若是否创建crystal对象而非clone对象为true，则创建crystal对象，然后随机攻击范围内的enemy
+                SkillManager.instance.crystal.CreateCrystal();
+                SkillManager.instance.crystal.CurrentCrystalChooseRandomTarget();
+            }
+            else
+            {
+                // 增加偏移量让clone出现的位置与enemy的位置有差异，二者不重叠
+                SkillManager.instance.clone.CreateClone(targets[randomIndex], new Vector3(xOffset, 0));
+            }
             amountOfAttacks--;
 
             if (amountOfAttacks <= 0)

@@ -15,6 +15,10 @@ public class CloneSkillController : MonoBehaviour
     [SerializeField] private Transform attackCheck;
     [SerializeField] private float attackCheckRadius = .8f;
     private Transform closestEnemy;
+    private bool canDupliucateClone;
+    private int facingDir = 1;
+    // 创建重复clone对象的概率
+    private float chanceToDuplicate;
 
     private void Awake()
     {
@@ -40,7 +44,8 @@ public class CloneSkillController : MonoBehaviour
     }
 
     // 设置clone体的位置
-    public void SetupClone(Transform _newTransform, float _cloneDuration, bool _canAttack, Vector3 _offset)
+    public void SetupClone(Transform _newTransform, float _cloneDuration, bool _canAttack, 
+        Vector3 _offset, Transform _closestEnemy, bool _canDuplicateClone, float _chanceToDuplicate)
     {
         if(_canAttack)
         {
@@ -51,6 +56,9 @@ public class CloneSkillController : MonoBehaviour
         transform.position = _newTransform.position + _offset;
         cloneTimer = _cloneDuration;
 
+        closestEnemy = _closestEnemy;
+        canDupliucateClone = _canDuplicateClone;
+        chanceToDuplicate = _chanceToDuplicate;
         FaceClosestTarget();
     }
 
@@ -73,6 +81,13 @@ public class CloneSkillController : MonoBehaviour
             if (hit.GetComponent<Enemy>() != null)
             {
                 hit.GetComponent<Enemy>().Damage();
+                if(canDupliucateClone)
+                {
+                    if(Random.Range(0, 100) < chanceToDuplicate)  // 有chanceToDuplicate概率进入判断 
+                    {
+                        SkillManager.instance.clone.CreateClone(hit.transform, new Vector3(.5f * facingDir, 0));
+                    }
+                }
             }
         }
     }
@@ -80,31 +95,12 @@ public class CloneSkillController : MonoBehaviour
     // 使clone对象面向最近的攻击对象
     private void FaceClosestTarget()
     {
-        // 获取此时在25范围内所有物体
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(attackCheck.position, 25);
-        // 正无穷大
-        float closestDistance = Mathf.Infinity;
-
-        foreach (var hit in colliders)
-        {
-            // 循环获取离clone体最近的enemy对象
-            if (hit.GetComponent<Enemy>() != null)
-            {
-                float distanceToEnemy = Vector2.Distance(transform.position, hit.transform.position);
-
-                if(distanceToEnemy < closestDistance)
-                {
-                    closestEnemy = hit.transform;
-                    closestDistance = distanceToEnemy;
-                }
-            }
-        }
-
         if (closestEnemy != null)
         {
             // 如果此时clone体在离最近的enemy的右侧的话，则clone旋转180，面向此enemy
             if(transform.position.x > closestEnemy.transform.position.x)
             {
+                facingDir = -1;
                 transform.Rotate(0, 180, 0);
             }
         }

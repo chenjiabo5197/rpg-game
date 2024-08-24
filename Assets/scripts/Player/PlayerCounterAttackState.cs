@@ -1,11 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 // player的反击状态，处于此状态时，enemy若攻击player且处于enemy的攻击蓄力阶段，enemy位于player的攻击范围内，player会反击enemy，
 // 若反击成功则打断enemy的攻击，使enemy处于眩晕状态
 public class PlayerCounterAttackState : PlayerState
 {
+    private bool canCreateClone;
+
     public PlayerCounterAttackState(Player _player, PlayerStateMachine _stateMachine, string _animBoolName) : base(_player, _stateMachine, _animBoolName)
     {
     }
@@ -13,7 +13,7 @@ public class PlayerCounterAttackState : PlayerState
     public override void Enter()
     {
         base.Enter();
-
+        canCreateClone = true;
         stateTimer = player.counterAttackDuration;
         player.anim.SetBool("SuccessfulCounterAttack", false);
     }
@@ -43,11 +43,16 @@ public class PlayerCounterAttackState : PlayerState
                     stateTimer = 10;
                     // 播放反击成功动画
                     player.anim.SetBool("SuccessfulCounterAttack", true);
+                    if (canCreateClone)
+                    {
+                        player.skill.clone.CreateCloneOnCounterAttack(hit.transform);
+                        canCreateClone = false;
+                    }
                 }
             }
         }
         // 如果在反击时间内没有反击成功或者此时攻击动画已播放完，则切换为idle状态
-        if(stateTimer < 0 || triggerCalled)
+        if (stateTimer < 0 || triggerCalled)
         {
             stateMachine.ChangeState(player.idleState);
         }
