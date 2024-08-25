@@ -12,6 +12,8 @@ public class Enemy_Skeleton : Enemy
     public SkeletonAttackState attackState { get; private set; }
 
     public SkeletonStunnedState stunnedState { get; private set; }
+
+    public SkeletonDeadState deadState { get; private set; }
     #endregion
 
     protected override void Awake()
@@ -25,6 +27,9 @@ public class Enemy_Skeleton : Enemy
         attackState = new SkeletonAttackState(this, stateMachine, "Attack", this);
 
         stunnedState = new SkeletonStunnedState(this, stateMachine, "Stunned", this);
+
+        // 此处的boolName随便写，因为会用lastAnimBoolName来代替此处赋值的boolName
+        deadState = new SkeletonDeadState(this, stateMachine, "Idle", this);
     }
 
     protected override void Start()
@@ -52,5 +57,12 @@ public class Enemy_Skeleton : Enemy
             return true;
         }
         return false;
+    }
+
+    public override void Dead()
+    {
+        base.Dead();
+
+        stateMachine.ChangeState(deadState);
     }
 }

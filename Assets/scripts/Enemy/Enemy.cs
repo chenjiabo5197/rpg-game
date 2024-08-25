@@ -32,6 +32,8 @@ public class Enemy : Entity
 
     // 状态机
     public EnemyStateMachine stateMachine { get; private set; }
+    // 记录enemy最后一个动画名
+    public string lastAnimBoolName { get; private set; }
 
     // 在游戏对象被实例化时首先调用的方法
     protected override void Awake()
@@ -55,6 +57,11 @@ public class Enemy : Entity
 
         stateMachine.currentState.Update();
 
+    }
+
+    public virtual void AssignLastAnimName(string _animBoolName)
+    {
+        lastAnimBoolName = _animBoolName;
     }
 
     public virtual void FreezeTime(bool _timeFrozen)

@@ -22,4 +22,11 @@ public class PlayerStats : CharacterStats
 
         player.DamageEffect();
     }
+
+    protected override void Dead()
+    {
+        base.Dead();
+
+        player.Dead();
+    }
 }

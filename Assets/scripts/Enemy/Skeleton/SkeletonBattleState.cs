@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class SkeletonBattleState : EnemyStatus
+public class SkeletonBattleState : EnemyState
 {
     // playerµÄ×ø±ê
     private Transform player;

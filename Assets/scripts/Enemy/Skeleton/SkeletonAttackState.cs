@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkeletonAttackState : EnemyStatus
+public class SkeletonAttackState : EnemyState
 {
     private Enemy_Skeleton enemy;
 

@@ -22,4 +22,11 @@ public class EnemyStats : CharacterStats
 
         enemy.DamageEffect();
     }
+
+    protected override void Dead()
+    {
+        base.Dead();
+
+        enemy.Dead();
+    }
 }

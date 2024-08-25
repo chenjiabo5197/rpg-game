@@ -17,7 +17,8 @@ public class Entity : MonoBehaviour
     public EntityFX fx { get; private set; }
     public SpriteRenderer sr { get; private set; }
     public CharacterStats stats { get; private set; }
-
+    // 碰撞体
+    public CapsuleCollider2D cc { get; private set; }
     #endregion
 
     [Header("Knockback Info")]
@@ -58,6 +59,7 @@ public class Entity : MonoBehaviour
         fx = GetComponent<EntityFX>();
         sr = GetComponentInChildren<SpriteRenderer>();  
         stats = GetComponent<CharacterStats>();
+        cc = GetComponent<CapsuleCollider2D>();
     }
 
     // 在 Awake 方法之后被调用，用于在游戏对象启用后执行一次性初始化操作
@@ -179,5 +181,9 @@ public class Entity : MonoBehaviour
         {
             sr.color = Color.white;
         }
+    }
+
+    public virtual void Dead()
+    {
     }
 }

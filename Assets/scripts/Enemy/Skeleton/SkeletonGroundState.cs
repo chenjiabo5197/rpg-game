@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class SkeletonGroundState : EnemyStatus
+public class SkeletonGroundState : EnemyState
 {
     protected Enemy_Skeleton enemy;
     // player此时的坐标

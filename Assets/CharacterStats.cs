@@ -31,11 +31,11 @@ public class CharacterStats : MonoBehaviour
 
         if (currentHealth < 0)
         {
-            Die();
+            Dead();
         }
     }
 
-    protected virtual void Die()
+    protected virtual void Dead()
     {
 
     }

@@ -56,6 +56,8 @@ public class Player : Entity
     public PlayerAimSwordState aimSwordState { get; private set; }
     public PlayerCatchSwordState catchSwordState { get; private set; }
     public PlayerBlackholeState blackholeState { get; private set; }
+
+    public PlayerDeadState deadState { get; private set; }
     #endregion
 
     // 在游戏对象被实例化时首先调用的方法
@@ -79,6 +81,7 @@ public class Player : Entity
         aimSwordState = new PlayerAimSwordState(this, stateMachine, "AimSword");
         catchSwordState = new PlayerCatchSwordState(this, stateMachine, "CatchSword");
         blackholeState = new PlayerBlackholeState(this, stateMachine, "Jump");
+        deadState = new PlayerDeadState(this, stateMachine, "Dead");
     }
 
     // 在 Awake 方法之后被调用，用于在游戏对象启用后执行一次性初始化操作
@@ -155,5 +158,12 @@ public class Player : Entity
             }
             stateMachine.ChangeState(dashState);   
         }
+    }
+
+    public override void Dead()
+    {
+        base.Dead();
+
+        stateMachine.ChangeState(deadState);
     }
 }

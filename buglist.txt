@@ -8,5 +8,7 @@
 
 5、enemy击中player时enemy有被击退的效果，需要修复
 
+6、player释放blackhole时，位于enemy的上方，enemy会为了面向player而不停的左右转向
+
 
 

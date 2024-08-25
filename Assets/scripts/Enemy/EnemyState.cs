@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyStatus
+public class EnemyState
 {
     protected EnemyStateMachine stateMachine;
     // Enemy基类
@@ -17,7 +17,7 @@ public class EnemyStatus
     // 状态计时器
     protected float stateTimer;
 
-    public EnemyStatus(Enemy _enemyBase, EnemyStateMachine _statusMachine, string _animBoolName)
+    public EnemyState(Enemy _enemyBase, EnemyStateMachine _statusMachine, string _animBoolName)
     {
         this.stateMachine = _statusMachine;
         this.enemyBase = _enemyBase;
@@ -40,6 +40,8 @@ public class EnemyStatus
     public virtual void Exit()
     {
         enemyBase.anim.SetBool(animBoolName, false);
+        // 将enemy的退出前状态名赋值给lastAnimBoolName
+        enemyBase.AssignLastAnimName(animBoolName);
     }
 
     // 用于停止攻击动画的函数，在EnemySkeleton中将此函数暴露出来，由animator在EnemySkeleton中调用该函数来停止攻击，animator只能调用到EnemySkeleton中
