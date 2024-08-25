@@ -74,7 +74,7 @@ public class CrystalSkillController : MonoBehaviour
             // 如果列表中物体是enemy，则调用enemy的damage函数，表示enemy收到伤害
             if (hit.GetComponent<Enemy>() != null)
             {
-                hit.GetComponent<Enemy>().Damage();
+                hit.GetComponent<Enemy>().DamageEffect();
             }
         }
     }

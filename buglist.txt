@@ -6,7 +6,7 @@
 
 4、player在blackhole下可以冲刺，预期不能
 
-
+5、enemy击中player时enemy有被击退的效果，需要修复
 
 
 

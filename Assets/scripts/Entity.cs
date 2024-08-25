@@ -16,6 +16,7 @@ public class Entity : MonoBehaviour
     // 实体被击中时的展示效果
     public EntityFX fx { get; private set; }
     public SpriteRenderer sr { get; private set; }
+    public CharacterStats stats { get; private set; }
 
     #endregion
 
@@ -56,6 +57,7 @@ public class Entity : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         fx = GetComponent<EntityFX>();
         sr = GetComponentInChildren<SpriteRenderer>();  
+        stats = GetComponent<CharacterStats>();
     }
 
     // 在 Awake 方法之后被调用，用于在游戏对象启用后执行一次性初始化操作
@@ -71,7 +73,7 @@ public class Entity : MonoBehaviour
     }
 
     // 伤害函数，player与enemy调用该函数，表明其收到了伤害
-    public virtual void Damage()
+    public virtual void DamageEffect()
     {
         // 起一个协程，来展示被击中的效果
         fx.StartCoroutine("FlashFX");

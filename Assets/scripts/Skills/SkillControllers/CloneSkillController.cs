@@ -80,7 +80,7 @@ public class CloneSkillController : MonoBehaviour
             // 如果列表中物体是enemy，则调用enemy的damage函数，表示enemy收到伤害
             if (hit.GetComponent<Enemy>() != null)
             {
-                hit.GetComponent<Enemy>().Damage();
+                hit.GetComponent<Enemy>().DamageEffect();
                 if(canDupliucateClone)
                 {
                     if(Random.Range(0, 100) < chanceToDuplicate)  // 有chanceToDuplicate概率进入判断 
