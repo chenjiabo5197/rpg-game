@@ -10,5 +10,5 @@
 
 6、enemy在攻击player时，偶现player站立不动enemy攻击无法击中的情况
 
-
+7、enemy在死亡时，会原地往上跳好多下，预期只跳一下
 

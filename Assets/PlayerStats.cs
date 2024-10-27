@@ -16,12 +16,6 @@ public class PlayerStats : CharacterStats
         base.Start();
     }
 
-    public override void DoDamage(CharacterStats _targetStats)
-    {
-        base.DoDamage(_targetStats);
-
-    }
-
     public override void TakeDamage(int _damage)
     {
         base.TakeDamage(_damage);

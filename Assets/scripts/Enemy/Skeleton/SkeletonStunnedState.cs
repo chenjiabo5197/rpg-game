@@ -37,6 +37,6 @@ public class SkeletonStunnedState : EnemyState
         base.Exit();
 
         // 允许在指定的时间后调用一个方法，参数1在指定时间后调用的方法的名称，参数2在调用方法之前需要等待的秒数
-        enemy.fx.Invoke("CancelRedBlink", 0);
+        enemy.fx.Invoke("CancelColorChange", 0);
     }
 }

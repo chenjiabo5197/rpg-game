@@ -45,6 +45,8 @@ public class Entity : MonoBehaviour
     // 是否面朝右方，默认为true
     protected bool facingRight = true;
 
+    public System.Action onFlipped;
+
     // 在游戏对象被实例化时首先调用的方法
     protected virtual void Awake()
     {
@@ -155,6 +157,11 @@ public class Entity : MonoBehaviour
         //float newPositionZ = transform.position.z;
         transform.Rotate(0, 180, 0);
         //transform.position = new Vector3(newPositionX, newPositionY, newPositionZ);
+
+        if(onFlipped != null)
+        {
+            onFlipped();
+        }
     }
 
     // 翻转函数控制器，确认调用Flip函数的时间

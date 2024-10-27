@@ -1,8 +1,11 @@
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Xml.Serialization;
 using UnityEngine;
 
 public class CharacterStats : MonoBehaviour
 {
+    private EntityFX fx;
+
     [Header("Major stats")]
     // 力量，增加伤害
     public Stat strength;
@@ -44,6 +47,7 @@ public class CharacterStats : MonoBehaviour
     // 是否被眩晕，减少20闪避
     public bool isShocked;
 
+    [SerializeField] private float ailmentsDuration = 4;
     // 点燃状态的定时器，点燃对象可以维持点燃状态的时间，时间小于0后，从点燃状态出来
     private float ignitedTimer;
     private float chilledTimer;
@@ -55,12 +59,17 @@ public class CharacterStats : MonoBehaviour
     // 点燃后每次造成的伤害
     private int igniteDamage;
 
-    [SerializeField] private int currentHealth;
+    public int currentHealth;
+
+    // 血量改变事件，发生该事件后，修改entity的血条
+    public System.Action onHealthChanged;
 
     public virtual void Start()
     {
         critPower.SetDefaultValue(150);
-        currentHealth = maxHealth.GetValue();
+        currentHealth = GetMaxHealthValue();
+
+        fx = GetComponent<EntityFX>();
     }
 
     protected virtual void Update()
@@ -88,7 +97,7 @@ public class CharacterStats : MonoBehaviour
             // 完成一次点燃伤害
             igniteDamageTimer = igniteDamageCooldown;
             Debug.Log("igniteDamageTimer");
-            currentHealth -= igniteDamage;
+            DecreaseHealthBy(igniteDamage);
             if (currentHealth < 0)
             {
                 Dead();
@@ -110,8 +119,10 @@ public class CharacterStats : MonoBehaviour
         }    
 
         totalDamage = CheckTargetArnor(_targetStats, totalDamage);
+        // 物理伤害
         _targetStats.TakeDamage(totalDamage);
-        //DoMagiclDamage(_targetStats);
+        // 魔法伤害
+        DoMagiclDamage(_targetStats);
     }
 
     public virtual void DoMagiclDamage(CharacterStats _targetStats)
@@ -183,17 +194,23 @@ public class CharacterStats : MonoBehaviour
         if (_ignite)
         {
             isIgnited = _ignite;
-            ignitedTimer = 2;
+            ignitedTimer = ailmentsDuration;
+
+            fx.IgniteFxFor(ailmentsDuration);
         }
         if (_chill)
         {
             isChilled = _chill;
-            chilledTimer = 2;
+            chilledTimer = ailmentsDuration;
+
+            fx.ChillFxFor(ailmentsDuration);
         }
         if (_shock)
         {
             isShocked = _shock;
-            shockedTimer = 2;
+            shockedTimer = ailmentsDuration;
+
+            fx.ShockFxFor(ailmentsDuration);
         }
     }
 
@@ -201,11 +218,22 @@ public class CharacterStats : MonoBehaviour
 
     public virtual void TakeDamage(int _damage)
     {
-        currentHealth -= _damage;
+        DecreaseHealthBy(_damage);
 
         if (currentHealth < 0)
         {
             Dead();
+        }
+    }
+
+    // 血量减少函数
+    protected virtual void DecreaseHealthBy(int _damage)
+    {
+        currentHealth -= _damage;
+
+        if (onHealthChanged != null)
+        {
+            onHealthChanged();
         }
     }
 
@@ -266,5 +294,11 @@ public class CharacterStats : MonoBehaviour
         float totalCritPower = (critPower.GetValue() + strength.GetValue()) * .01f;
         float critDamage = _damage * totalCritPower;
         return Mathf.RoundToInt(critDamage);
+    }
+
+    public int GetMaxHealthValue()
+    {
+        // 1点生命力增加5点血
+        return maxHealth.GetValue() + vitality.GetValue() * 5;
     }
 }
