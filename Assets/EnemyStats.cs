@@ -20,8 +20,11 @@ public class EnemyStats : CharacterStats
     {
         base.DoDamage(_targetStats);
 
-        Debug.Log("enemy stats");
+    }
 
+    public override void TakeDamage(int _damage)
+    {
+        base.TakeDamage(_damage);
         enemy.DamageEffect();
     }
 

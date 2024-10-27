@@ -110,8 +110,8 @@ public class CharacterStats : MonoBehaviour
         }    
 
         totalDamage = CheckTargetArnor(_targetStats, totalDamage);
-        // _targetStats.TakeDamage(totalDamage);
-        DoMagiclDamage(_targetStats);
+        _targetStats.TakeDamage(totalDamage);
+        //DoMagiclDamage(_targetStats);
     }
 
     public virtual void DoMagiclDamage(CharacterStats _targetStats)
@@ -123,7 +123,7 @@ public class CharacterStats : MonoBehaviour
         // 每1点智力增加1点魔法伤害
         int totalMagicalDamage = _fireDamage + _iceDamage + _lightingDamage + intelligence.GetValue();
         totalMagicalDamage = CheckTargetResistance(_targetStats, totalMagicalDamage);
-        _targetStats.TakeDamage(totalMagicalDamage);
+        //_targetStats.TakeDamage(totalMagicalDamage);
 
         if (Mathf.Max(_fireDamage, _iceDamage, _lightingDamage) <= 0)
         {

@@ -20,6 +20,11 @@ public class PlayerStats : CharacterStats
     {
         base.DoDamage(_targetStats);
 
+    }
+
+    public override void TakeDamage(int _damage)
+    {
+        base.TakeDamage(_damage);
         player.DamageEffect();
     }
 
