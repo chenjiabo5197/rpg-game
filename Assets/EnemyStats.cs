@@ -20,6 +20,8 @@ public class EnemyStats : CharacterStats
     {
         base.DoDamage(_targetStats);
 
+        Debug.Log("enemy stats");
+
         enemy.DamageEffect();
     }
 
