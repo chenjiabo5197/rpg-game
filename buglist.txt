@@ -6,11 +6,9 @@
 
 4、player在blackhole下可以冲刺，预期不能
 
-5、enemy击中player时enemy有被击退的效果，需要修复，预期enemy击中player时，player也有被击中闪烁的效果
+5、player释放blackhole时，位于enemy的上方，enemy会为了面向player而不停的左右转向
 
-6、player释放blackhole时，位于enemy的上方，enemy会为了面向player而不停的左右转向
-
-7、enemy在攻击player时，偶现player站立不动enemy攻击无法击中的情况
+6、enemy在攻击player时，偶现player站立不动enemy攻击无法击中的情况
 
 
 
