@@ -20,6 +20,8 @@ public class Player : Entity
     public float jumpForce;
     // player 在回收剑时剑带来的冲击力
     public float swordReturnImpact;
+    private float defaultMoveSpeed;
+    private float defaultJumpForce;
 
     [Header("Dash Info")]
     // 冲刺冷却时间
@@ -32,6 +34,7 @@ public class Player : Entity
     public float dashDuration;
     // 冲刺方向
     public float dashDir { get; private set; }
+    private float defaultDashSpeed;
 
     // SkillManager的实例化对象，后续访问该对象不必通过SkillManager.instance
     public SkillManager skill { get; private set; }
@@ -92,6 +95,10 @@ public class Player : Entity
         skill = SkillManager.instance;
 
         stateMachine.Initialize(idleState);
+
+        defaultMoveSpeed = moveSpeed;
+        defaultJumpForce = jumpForce;
+        defaultDashSpeed = dashSpeed;
     }
 
     // 游戏中每帧都会调用
@@ -109,7 +116,26 @@ public class Player : Entity
         }
     }
 
-    // 分配与清楚sword对象
+    public override void SlowEntityBy(float _slowPercentage, float _slowDuration)
+    {
+        moveSpeed = moveSpeed * (1 - _slowPercentage);
+        jumpForce = jumpForce * (1 - _slowPercentage);
+        dashSpeed = dashSpeed * (1 - _slowPercentage);
+        anim.speed = anim.speed * (1 - _slowPercentage);
+
+        Invoke("ReturnDefaultSpeed", _slowDuration);
+    }
+
+    protected override void ReturnDefaultSpeed()
+    {
+        base.ReturnDefaultSpeed();
+
+        moveSpeed = defaultMoveSpeed;
+        jumpForce = defaultJumpForce;
+        dashSpeed = defaultDashSpeed;
+    }
+
+    // 分配与清除sword对象
     public void AssignNewSword(GameObject _newSword)
     {
         sword = _newSword;

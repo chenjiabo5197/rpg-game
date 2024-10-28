@@ -76,6 +76,16 @@ public class Entity : MonoBehaviour
         
     }
 
+    public virtual void SlowEntityBy(float _slowPercentage, float _slowDuration)
+    {
+
+    }
+
+    protected virtual void ReturnDefaultSpeed()
+    {
+        anim.speed = 1;
+    }
+
     // 伤害函数，player与enemy调用该函数，表明其收到了伤害
     public virtual void DamageEffect()
     {
