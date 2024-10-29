@@ -52,12 +52,17 @@ public class CharacterStats : MonoBehaviour
     private float ignitedTimer;
     private float chilledTimer;
     private float shockedTimer;
+    
     // 点燃后每次造成伤害之间的间隔
     private float igniteDamageCooldown = .3f;
     // 点燃受伤的定时器，在每次update时减少，小于0后完成一次受伤
     private float igniteDamageTimer;
     // 点燃后每次造成的伤害
     private int igniteDamage;
+    // 雷击对象的预制件
+    [SerializeField] private GameObject shockStrikePrefab;
+    // 雷击造成的伤害
+    private int shockDamage;
 
     public int currentHealth;
 
@@ -172,6 +177,10 @@ public class CharacterStats : MonoBehaviour
         {
             _targetStats.SetupIgniteDamage(Mathf.RoundToInt(_fireDamage * .2f));
         }
+        if(canApplyShock)
+        {
+            _targetStats.SetupShockDamage(Mathf.RoundToInt(_lightingDamage * .1f));
+        }
 
         _targetStats.ApplyAilments(canApplyIgnite, canApplyChill, canApplyShock);
     }
@@ -187,18 +196,19 @@ public class CharacterStats : MonoBehaviour
     public void ApplyAilments(bool _ignite, bool _chill, bool _shock)
     {
         // 判断对象当前是否处于伤害中，处于则返回
-        if (isIgnited || isChilled || isShocked)
-        {
-            return;
-        }
-        if (_ignite)
+        bool canApplyIgnite = !isIgnited && !isChilled && !isShocked;
+        bool canApplyChill = !isIgnited && !isChilled && !isShocked;
+        bool canApplyShock = !isIgnited && !isChilled;
+
+
+        if (_ignite && canApplyIgnite)
         {
             isIgnited = _ignite;
             ignitedTimer = ailmentsDuration;
 
             fx.IgniteFxFor(ailmentsDuration);
         }
-        if (_chill)
+        if (_chill && canApplyChill)
         {
             isChilled = _chill;
             chilledTimer = ailmentsDuration;
@@ -206,16 +216,75 @@ public class CharacterStats : MonoBehaviour
             GetComponent<Entity>().SlowEntityBy(slowPercentage, ailmentsDuration);
             fx.ChillFxFor(ailmentsDuration);
         }
-        if (_shock)
+        if (_shock && canApplyShock)
         {
-            isShocked = _shock;
-            shockedTimer = ailmentsDuration;
+            if (!isShocked)
+            {
+                ApplyShock(_shock);
+            }
+            else
+            {
+                // 防止enemy在攻击player时触发雷击中enemy
+                if (GetComponent<Player>() != null)
+                {
+                    return;
+                }
 
-            fx.ShockFxFor(ailmentsDuration);
+                HitNearestTargetWithShockStrike();
+            }
+        }
+    }
+
+    public void ApplyShock(bool _shock)
+    {
+        if(isShocked)
+        {
+            return;
+        }
+
+        isShocked = _shock;
+        shockedTimer = ailmentsDuration;
+        fx.ShockFxFor(ailmentsDuration);
+    }
+
+    private void HitNearestTargetWithShockStrike()
+    {
+        // 找到距离最近的enemy对象
+        Transform closestEnemy = null;
+        // 获取此时在25范围内所有物体
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 25);
+        // 正无穷大
+        float closestDistance = Mathf.Infinity;
+
+        foreach (var hit in colliders)
+        {
+            // 循环获取离clone体最近的enemy对象
+            if (hit.GetComponent<Enemy>() != null && Vector2.Distance(transform.position, hit.transform.position) > 1)
+            {
+                float distanceToEnemy = Vector2.Distance(transform.position, hit.transform.position);
+
+                if (distanceToEnemy < closestDistance)
+                {
+                    closestEnemy = hit.transform;
+                    closestDistance = distanceToEnemy;
+                }
+            }
+            if (closestEnemy == null)
+            {
+                closestEnemy = transform;
+            }
+        }
+        // 实例化雷击对象
+        if (closestEnemy != null)
+        {
+            GameObject newShockStrike = Instantiate(shockStrikePrefab, transform.position, Quaternion.identity);
+            // 设置雷击参数值
+            newShockStrike.GetComponent<ShockStrike_Controller>().Setup(shockDamage, closestEnemy.GetComponent<CharacterStats>());
         }
     }
 
     public void SetupIgniteDamage(int _damage) => igniteDamage = _damage;
+    public void SetupShockDamage(int _damage) => shockDamage = _damage;
 
     public virtual void TakeDamage(int _damage)
     {
