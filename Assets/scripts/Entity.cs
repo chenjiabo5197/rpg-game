@@ -86,16 +86,8 @@ public class Entity : MonoBehaviour
         anim.speed = 1;
     }
 
-    // 伤害函数，player与enemy调用该函数，表明其收到了伤害
-    public virtual void DamageEffect()
-    {
-        // 起一个协程，来展示被击中的效果
-        fx.StartCoroutine("FlashFX");
-        // 起一个协程，被击中后后退
-        StartCoroutine("HisKnockback");
-
-        Debug.Log(gameObject.name + " was danaged");
-    }
+    // 伤害函数，player与enemy调用该函数，表明其收到了伤害  // 起一个协程，被击中后后退
+    public virtual void DamageImpact() => StartCoroutine("HisKnockback");
 
     // 击退函数，协程调用该函数
     protected virtual IEnumerator HisKnockback()
@@ -187,18 +179,6 @@ public class Entity : MonoBehaviour
         }
     }
     #endregion
-
-    public void MakeTransparent(bool _transparent)
-    {
-        if (_transparent)
-        {
-            sr.color = Color.clear;
-        }
-        else
-        {
-            sr.color = Color.white;
-        }
-    }
 
     public virtual void Dead()
     {

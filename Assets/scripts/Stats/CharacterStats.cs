@@ -65,6 +65,7 @@ public class CharacterStats : MonoBehaviour
     private int shockDamage;
 
     public int currentHealth;
+    protected bool isDead;
 
     // 血量改变事件，发生该事件后，修改entity的血条
     public System.Action onHealthChanged;
@@ -97,16 +98,9 @@ public class CharacterStats : MonoBehaviour
         {
             isShocked = false;
         }
-        if (igniteDamageTimer < 0 && isIgnited)
+        if (isIgnited)
         {
-            // 完成一次点燃伤害
-            igniteDamageTimer = igniteDamageCooldown;
-            Debug.Log("igniteDamageTimer");
-            DecreaseHealthBy(igniteDamage);
-            if (currentHealth < 0)
-            {
-                Dead();
-            }
+            ApplyIgniteDamage();
         }
     }
 
@@ -127,8 +121,10 @@ public class CharacterStats : MonoBehaviour
         // 物理伤害
         _targetStats.TakeDamage(totalDamage);
         // 魔法伤害
-        DoMagiclDamage(_targetStats);
+        // DoMagiclDamage(_targetStats);
     }
+
+    #region Magic damage and ailments
 
     public virtual void DoMagiclDamage(CharacterStats _targetStats)
     {
@@ -146,6 +142,11 @@ public class CharacterStats : MonoBehaviour
             return;
         }
 
+        AttemptyToApplyAilments(_targetStats, _fireDamage, _iceDamage, _lightingDamage);
+    }
+
+    private void AttemptyToApplyAilments(CharacterStats _targetStats, int _fireDamage, int _iceDamage, int _lightingDamage)
+    {
         bool canApplyIgnite = _fireDamage > _iceDamage && _fireDamage > _lightingDamage;
         bool canApplyChill = _iceDamage > _fireDamage && _iceDamage > _lightingDamage;
         bool canApplyShock = _lightingDamage > _fireDamage && _lightingDamage > _iceDamage;
@@ -173,24 +174,16 @@ public class CharacterStats : MonoBehaviour
             }
         }
 
-        if(canApplyIgnite)
+        if (canApplyIgnite)
         {
             _targetStats.SetupIgniteDamage(Mathf.RoundToInt(_fireDamage * .2f));
         }
-        if(canApplyShock)
+        if (canApplyShock)
         {
             _targetStats.SetupShockDamage(Mathf.RoundToInt(_lightingDamage * .1f));
         }
 
         _targetStats.ApplyAilments(canApplyIgnite, canApplyChill, canApplyShock);
-    }
-
-    private static int CheckTargetResistance(CharacterStats _targetStats, int totalMagicalDamage)
-    {
-        // 每1点智力增加3点魔法伤害
-        totalMagicalDamage -= _targetStats.magicResistance.GetValue() + (_targetStats.intelligence.GetValue() * 3);
-        totalMagicalDamage = Mathf.Clamp(totalMagicalDamage, 0, int.MaxValue);
-        return totalMagicalDamage;
     }
 
     public void ApplyAilments(bool _ignite, bool _chill, bool _shock)
@@ -283,14 +276,35 @@ public class CharacterStats : MonoBehaviour
         }
     }
 
+    private void ApplyIgniteDamage()
+    {
+        if (igniteDamageTimer < 0)
+        {
+            // 完成一次点燃伤害
+            igniteDamageTimer = igniteDamageCooldown;
+            DecreaseHealthBy(igniteDamage);
+            if (currentHealth < 0 && !isDead)
+            {
+                Dead();
+            }
+        }
+    }
+
     public void SetupIgniteDamage(int _damage) => igniteDamage = _damage;
     public void SetupShockDamage(int _damage) => shockDamage = _damage;
+
+    #endregion
 
     public virtual void TakeDamage(int _damage)
     {
         DecreaseHealthBy(_damage);
 
-        if (currentHealth < 0)
+        GetComponent<Entity>().DamageImpact();
+
+        // 起一个协程，来展示被击中的效果
+        fx.StartCoroutine("FlashFX");
+
+        if (currentHealth < 0 && !isDead)
         {
             Dead();
         }
@@ -307,12 +321,9 @@ public class CharacterStats : MonoBehaviour
         }
     }
 
-    protected virtual void Dead()
-    {
+    #region Stat calculation
 
-    }
-
-    private static int CheckTargetArnor(CharacterStats _targetStats, int totalDamage)
+    private int CheckTargetArnor(CharacterStats _targetStats, int totalDamage)
     {
         if (_targetStats.isChilled)
         {
@@ -326,6 +337,14 @@ public class CharacterStats : MonoBehaviour
         // 对伤害设定最小和最大值，防止伤害值小于0时，击中敌人会给敌人加血
         totalDamage = Mathf.Clamp(totalDamage, 0, int.MaxValue);
         return totalDamage;
+    }
+
+    private int CheckTargetResistance(CharacterStats _targetStats, int totalMagicalDamage)
+    {
+        // 每1点智力增加3点魔法伤害
+        totalMagicalDamage -= _targetStats.magicResistance.GetValue() + (_targetStats.intelligence.GetValue() * 3);
+        totalMagicalDamage = Mathf.Clamp(totalMagicalDamage, 0, int.MaxValue);
+        return totalMagicalDamage;
     }
 
     private bool TargetCanAvoidAttack(CharacterStats _targetStats)
@@ -371,4 +390,10 @@ public class CharacterStats : MonoBehaviour
         // 1点生命力增加5点血
         return maxHealth.GetValue() + vitality.GetValue() * 5;
     }
+
+    protected virtual void Dead()
+    {
+        isDead = true;
+    }
+    #endregion
 }

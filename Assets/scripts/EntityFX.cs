@@ -25,6 +25,18 @@ public class EntityFX : MonoBehaviour
         originalMat = sr.material;
     }
 
+    public void MakeTransparent(bool _transparent)
+    {
+        if (_transparent)
+        {
+            sr.color = Color.clear;
+        }
+        else
+        {
+            sr.color = Color.white;
+        }
+    }
+
     // 起一个协程，先将material置为打击时的material，等待一定时间后，再将其置为原始的material
     private IEnumerator FlashFX()
     {

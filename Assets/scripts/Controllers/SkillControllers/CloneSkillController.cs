@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CloneSkillController : MonoBehaviour
 {
+    private Player player;
     // 渲染器
     private SpriteRenderer sr;
     private Animator anim;
@@ -45,8 +46,9 @@ public class CloneSkillController : MonoBehaviour
 
     // 设置clone体的位置
     public void SetupClone(Transform _newTransform, float _cloneDuration, bool _canAttack, 
-        Vector3 _offset, Transform _closestEnemy, bool _canDuplicateClone, float _chanceToDuplicate)
+        Vector3 _offset, Transform _closestEnemy, bool _canDuplicateClone, float _chanceToDuplicate, Player _player)
     {
+        player = _player;
         if(_canAttack)
         {
             // 随机播放攻击1-3任意动画
@@ -62,7 +64,7 @@ public class CloneSkillController : MonoBehaviour
         FaceClosestTarget();
     }
 
-    private Player player => GetComponentInParent<Player>();
+    // private Player player => GetComponentInParent<Player>();
 
     // 为了停止攻击，一般在攻击动画的后一帧调用，攻击结束后，设置定时器值小于0，使其进入消失流程
     private void AnimationTrigger()
@@ -80,7 +82,8 @@ public class CloneSkillController : MonoBehaviour
             // 如果列表中物体是enemy，则调用enemy的damage函数，表示enemy收到伤害
             if (hit.GetComponent<Enemy>() != null)
             {
-                hit.GetComponent<Enemy>().DamageEffect();
+                // hit.GetComponent<Enemy>().DamageEffect();
+                player.stats.DoDamage(hit.GetComponent<CharacterStats>());
                 if(canDupliucateClone)
                 {
                     if(Random.Range(0, 100) < chanceToDuplicate)  // 有chanceToDuplicate概率进入判断 
