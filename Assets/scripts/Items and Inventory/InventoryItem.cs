@@ -4,7 +4,9 @@ using System;
 [Serializable]
 public class InventoryItem
 {
+    // 库存中的物品
     public ItemData data;
+    // 库存中物品的数量
     public int stackSize;
 
     public InventoryItem(ItemData _newItemData)

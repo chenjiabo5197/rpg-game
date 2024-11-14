@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class UI_ItemSlot : MonoBehaviour
 {
+    // 渲染库存中单个物体的种类图片
     [SerializeField] private Image itemImage;
+    // 用于渲染库存中单个物品数量
     [SerializeField] private TextMeshProUGUI itemText;
 
     public InventoryItem Item;
