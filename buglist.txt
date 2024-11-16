@@ -10,5 +10,4 @@
 
 6、enemy在攻击player时，偶现player站立不动enemy攻击无法击中的情况
 
-7、在没有enemy时，player冲刺释放crystal攻击会报空指针异常
 
