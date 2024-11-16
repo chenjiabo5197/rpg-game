@@ -4,24 +4,33 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-
     public static Inventory instance;
     // 记录所有的inventoryItems，下面的字典用于判断ItemData是否在list中
-    // inventory中储存equipment
+    // inventory中储存已有的equipment
     public List<InventoryItem> inventory;
     // 用于判断ItemData是否已加入到inventoryItems中
     public Dictionary<ItemData, InventoryItem> inventoryDictionary;
 
-    // stash中储存material
+    // stash中储存已有的material
     public List<InventoryItem> stash;
     public Dictionary <ItemData, InventoryItem> stashDictionary;
+
+    // player装备的equipment
+    public List<InventoryItem> equipment;
+    public Dictionary<ItemData_Equipment, InventoryItem> equipmentDictionary;
 
     [Header("Inventory UI")]
     // 展示在屏幕上的inventorySlot对象的父对象，主要用于确认inventorySlot对象的渲染位置，获取inventorySlot对象
     [SerializeField] private Transform inventorySlotParent;
     [SerializeField] private Transform stashSlotParent;
+    [SerializeField] private Transform equipmentSlotParent;
+    // 要渲染在屏幕上的item列表
+    // 库存的装备列表
     private UI_ItemSlot[] inventoryItemSlot;
+    // 库存的材料列表
     private UI_ItemSlot[] stashItemSlot;
+    // 已装备的装备列表
+    private UI_EquipmentSlot[] equipmentSlot;
 
     private void Awake()
     {
@@ -43,12 +52,78 @@ public class Inventory : MonoBehaviour
         stash = new List<InventoryItem>();
         stashDictionary = new Dictionary<ItemData, InventoryItem>();
 
+        equipment = new List<InventoryItem>();
+        equipmentDictionary = new Dictionary<ItemData_Equipment, InventoryItem>();
+
         inventoryItemSlot = inventorySlotParent.GetComponentsInChildren<UI_ItemSlot>();
         stashItemSlot = stashSlotParent.GetComponentsInChildren<UI_ItemSlot>();
+        equipmentSlot = equipmentSlotParent.GetComponentsInChildren<UI_EquipmentSlot>();
+    }
+
+    public void EquipItem(ItemData _item)
+    {
+        // 将_item 转换为 ItemData_Equipment 类型，如果转化失败则为null
+        ItemData_Equipment newEquipment = _item as ItemData_Equipment;
+        InventoryItem newItem = new InventoryItem(newEquipment);
+
+        ItemData_Equipment oldEquipment = null;
+
+        foreach (KeyValuePair<ItemData_Equipment, InventoryItem> item in equipmentDictionary)
+        {
+            if (item.Key.equipmentType == newEquipment.equipmentType)
+            {
+                oldEquipment = item.Key;
+            }
+        }
+
+        if (oldEquipment != null)
+        {
+            UnequipItem(oldEquipment);
+            AddItem(oldEquipment);
+        }
+
+        equipment.Add(newItem);
+        equipmentDictionary.Add(newEquipment, newItem);
+        RemoveItem(_item);
+
+        UpdateSlotUI();
+    }
+
+    // 卸载正在装备的equipment
+    private void UnequipItem(ItemData_Equipment itemToRemove)
+    {
+        if (equipmentDictionary.TryGetValue(itemToRemove, out InventoryItem value))
+        {
+            equipment.Remove(value);
+            equipmentDictionary.Remove(itemToRemove);
+        }
     }
 
     private void UpdateSlotUI()
     {
+        // 更新equipment，遍历equipment的渲染位置，将equipmentDictionary中的item渲染在与其equipmentType相同的equipmentSlot位置
+        for (int i = 0; i<equipmentSlot.Length; i++)
+        {
+            foreach (KeyValuePair<ItemData_Equipment, InventoryItem> item in equipmentDictionary)
+            {
+                if (item.Key.equipmentType == equipmentSlot[i].slotType)
+                {
+                    equipmentSlot[i].UpdateSlot(item.Value);
+                }
+            }
+        }
+
+        // 先删除所有格子中已渲染的所有item，否则下面的再次渲染会出现重复渲染的问题(装备后，物品消失，会空出一个格子，如果不取消渲染，
+        // 这个格子一直处于渲染中，因为此时这个格子中应该为空，所以下面的循环渲染语句也不会渲染到此格子中)
+        for (int i = 0; i < inventoryItemSlot.Length; i++)
+        {
+            inventoryItemSlot[i].ClearUpSlot();
+        }
+        for (int i = 0; i < stashItemSlot.Length; i++)
+        {
+            stashItemSlot[i].ClearUpSlot();
+        }
+
         // 渲染inventoryItems列表中的对象
         for (int i = 0; i < inventory.Count; i++)
         {
