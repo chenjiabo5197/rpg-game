@@ -15,21 +15,21 @@ public class UI_ItemSlot : MonoBehaviour , IPointerDownHandler
     // 用于渲染库存中单个物品数量
     [SerializeField] private TextMeshProUGUI itemText;
 
-    public InventoryItem Item;
+    public InventoryItem item;
 
     public void UpdateSlot(InventoryItem _newItem)
     {
-        Item = _newItem;
+        item = _newItem;
 
         // 使预制件可见，默认的α为0，全透明
         itemImage.color = Color.white;
 
-        if (Item != null)
+        if (item != null)
         {
-            itemImage.sprite = Item.data.icon;
-            if (Item.stackSize > 1)
+            itemImage.sprite = item.data.icon;
+            if (item.stackSize > 1)
             {
-                itemText.text = Item.stackSize.ToString();
+                itemText.text = item.stackSize.ToString();
             }
             else
             {
@@ -40,18 +40,18 @@ public class UI_ItemSlot : MonoBehaviour , IPointerDownHandler
 
     public void ClearUpSlot()
     {
-        Item = null;
+        item = null;
         itemImage.sprite = null;
         itemImage.color = Color.clear;
         itemText.text = "";
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public virtual void OnPointerDown(PointerEventData eventData)
     {
-        if (Item.data.itemType == ItemType.Equipment)
+        if (item.data.itemType == ItemType.Equipment)
         {
             //Debug.Log("Equiped new item + " + Item.data.itemName);
-            Inventory.instance.EquipItem(Item.data);
+            Inventory.instance.EquipItem(item.data);
         }
     }
 }

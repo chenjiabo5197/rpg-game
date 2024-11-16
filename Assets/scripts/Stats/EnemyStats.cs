@@ -6,6 +6,13 @@ public class EnemyStats : CharacterStats
 {
     private Enemy enemy;
 
+    [Header("Level details")]
+    [SerializeField] private int level = 1;
+
+    // 在Inspector面板中限制一个浮点型（percentageModifier）字段的取值范围为0-1
+    [Range(0f, 1f)]
+    [SerializeField] private float percentageModifier = .4f;
+
     private void Awake()
     {
         enemy = GetComponent<Enemy>();
@@ -13,7 +20,38 @@ public class EnemyStats : CharacterStats
 
     public override void Start()
     {
+        ApplyLevelModifiers();
         base.Start();
+    }
+
+    private void ApplyLevelModifiers()
+    {
+        Modify(strength);
+        Modify(agility);
+        Modify(intelligence);
+        Modify(vitality);
+
+        Modify(damage);
+        Modify(critChange);
+        Modify(critPower);
+
+        Modify(maxHealth);
+        Modify(armor);
+        Modify(evasion);
+        Modify(magicResistance);
+ 
+        Modify(fireDamage);
+        Modify(iceDamage);
+        Modify(lightingDamage);
+    }
+
+    private void Modify(Stat _stat)
+    {
+        for (int i = 1; i < level; i++)
+        {
+            float modifier = _stat.GetValue() * percentageModifier;
+            _stat.AddModifier(Mathf.RoundToInt(modifier));
+        }
     }
 
     public override void TakeDamage(int _damage)
