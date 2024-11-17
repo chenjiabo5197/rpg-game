@@ -56,6 +56,16 @@ public class Entity : MonoBehaviour
         // sword图层编号是8
         Physics2D.IgnoreLayerCollision(6, 8);
 
+        // 忽略Item与除过地面之外所有层级的碰撞
+        Physics2D.IgnoreLayerCollision(9, 0);
+        Physics2D.IgnoreLayerCollision(9, 1);
+        Physics2D.IgnoreLayerCollision(9, 2);
+        Physics2D.IgnoreLayerCollision(9, 4);
+        Physics2D.IgnoreLayerCollision(9, 5);
+        Physics2D.IgnoreLayerCollision(9, 6);
+        Physics2D.IgnoreLayerCollision(9, 7);
+        Physics2D.IgnoreLayerCollision(9, 8);
+
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
         fx = GetComponent<EntityFX>();

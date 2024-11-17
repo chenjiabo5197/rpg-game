@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum EquipmentType
@@ -46,6 +47,9 @@ public class ItemData_Equipment : ItemData
     public int fireDamage;
     public int iceDamage;
     public int lightingDamage;
+
+    [Header("Craft requirements")]
+    public List<InventoryItem> craftingMaterials;
 
     /*
      * 通过不同装备的属性，来对player的属性进行修改(增加或减少)，增加是将其加入到player的modifier的列表中，

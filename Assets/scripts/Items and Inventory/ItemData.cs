@@ -14,4 +14,8 @@ public class ItemData : ScriptableObject
     public string itemName;
     // sprite 图片资源
     public Sprite icon;
+
+    // 物品的掉落几率，0-100之间
+    [Range(0, 100)]
+    public float dropChance;
 }

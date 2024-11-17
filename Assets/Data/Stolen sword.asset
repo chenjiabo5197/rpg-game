@@ -15,6 +15,7 @@ MonoBehaviour:
   itemType: 1
   itemName: Stolen sword
   icon: {fileID: 1526008332, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  dropChance: 15.3
   equipmentType: 0
   strength: 0
   agility: 5
@@ -30,3 +31,8 @@ MonoBehaviour:
   fireDamage: 0
   iceDamage: 0
   lightingDamage: 0
+  craftingMaterials:
+  - data: {fileID: 11400000, guid: c1bb6eded4496b249a5edc54d9f3d509, type: 2}
+    stackSize: 1
+  - data: {fileID: 11400000, guid: 52b93993c60618048b20f3eae618d9c5, type: 2}
+    stackSize: 1
