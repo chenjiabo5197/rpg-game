@@ -5,6 +5,9 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     public static Inventory instance;
+
+    // 初始的装备
+    public List<ItemData> startingItems;
     // 记录所有的inventoryItems，下面的字典用于判断ItemData是否在list中
     // inventory中储存已有的equipment
     public List<InventoryItem> inventory;
@@ -46,7 +49,7 @@ public class Inventory : MonoBehaviour
 
     private void Start()
     {
-        inventory = new List<InventoryItem>(); 
+        inventory = new List<InventoryItem>();
         inventoryDictionary = new Dictionary<ItemData, InventoryItem>();
 
         stash = new List<InventoryItem>();
@@ -58,6 +61,15 @@ public class Inventory : MonoBehaviour
         inventoryItemSlot = inventorySlotParent.GetComponentsInChildren<UI_ItemSlot>();
         stashItemSlot = stashSlotParent.GetComponentsInChildren<UI_ItemSlot>();
         equipmentSlot = equipmentSlotParent.GetComponentsInChildren<UI_EquipmentSlot>();
+        AddStartingItems();
+    }
+
+    private void AddStartingItems()
+    {
+        for (int i = 0; i < startingItems.Count; i++)
+        {
+            AddItem(startingItems[i]);
+        }
     }
 
     public void EquipItem(ItemData _item)
@@ -221,6 +233,7 @@ public class Inventory : MonoBehaviour
         {
             if (stashDictionary.TryGetValue(_requiredMaterials[i].data, out InventoryItem stashValue))
             {
+                // 若库存中item的数量小于制作装备所需数量，则返回false
                 if(stashValue.stackSize < _requiredMaterials[i].stackSize)
                 {
                     Debug.Log("not enough materials");
@@ -228,6 +241,7 @@ public class Inventory : MonoBehaviour
                 }
                 else
                 {
+                    // 记录需要从库存中删除的item
                     materialsToRemove.Add(stashValue);
                 }
             }
@@ -247,6 +261,10 @@ public class Inventory : MonoBehaviour
         Debug.Log("here is your item " + _itemToCraft.name);
         return true;
     }
+
+    public List<InventoryItem> GetEquipmentList() => equipment;
+
+    public List<InventoryItem> GetStashList() => stash;
 
     /*private void Update()
     {

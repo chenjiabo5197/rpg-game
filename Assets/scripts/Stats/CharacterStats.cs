@@ -65,7 +65,7 @@ public class CharacterStats : MonoBehaviour
     private int shockDamage;
 
     public int currentHealth;
-    protected bool isDead;
+    public bool isDead {  get; private set; }
 
     // 血量改变事件，发生该事件后，修改entity的血条
     public System.Action onHealthChanged;
