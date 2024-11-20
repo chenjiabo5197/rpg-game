@@ -15,6 +15,9 @@ public class ItemData_Equipment : ItemData
 {
     public EquipmentType equipmentType;
 
+    // 装备的影响数组
+    public ItemEffect[] itemEffects;
+
     [Header("Major stats")]
     // 力量，增加伤害
     public int strength;
@@ -50,6 +53,14 @@ public class ItemData_Equipment : ItemData
 
     [Header("Craft requirements")]
     public List<InventoryItem> craftingMaterials;
+
+    public void ExecuteItemEffect()
+    {
+        foreach (var item in itemEffects)
+        {
+            item.ExecuteEffect();
+        }
+    }
 
     /*
      * 通过不同装备的属性，来对player的属性进行修改(增加或减少)，增加是将其加入到player的modifier的列表中，
