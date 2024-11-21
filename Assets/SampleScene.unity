@@ -8590,7 +8590,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   damage:
-    baseValue: 100
+    baseValue: 10
     modifiers: 
   critChange:
     baseValue: 0

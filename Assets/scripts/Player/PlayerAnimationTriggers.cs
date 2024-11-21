@@ -29,7 +29,7 @@ public class PlayerAnimationTriggers : MonoBehaviour
                 player.stats.DoDamage(target);
 
                 // 应用武器的影响效果
-                Inventory.instance.GetEquipment(EquipmentType.Weapon)?.ExecuteItemEffect();
+                Inventory.instance.GetEquipment(EquipmentType.Weapon)?.Effect(target.transform);
             }
         }
     }
