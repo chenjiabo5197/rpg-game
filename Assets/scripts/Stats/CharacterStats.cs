@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Xml.Serialization;
 using UnityEngine;
@@ -104,6 +105,22 @@ public class CharacterStats : MonoBehaviour
         }
     }
 
+    // 增加buff或者debuff
+    public virtual void IncreaseStatBy(int _modifier, float _duration, Stat _statToModify)
+    {
+        StartCoroutine(StatModCoroutine(_modifier, _duration, _statToModify));
+    }
+
+    // 在duration时间内给statToModify值添加modifier值，一般用于给player加buff，buff有时间限制，在该时间内，player的某些数值会增加
+    private IEnumerator StatModCoroutine(int _modifier, float _duration, Stat _statToModify)
+    {
+        _statToModify.AddModifier(_modifier);
+
+        yield return new WaitForSeconds(_duration);
+
+        _statToModify.RemoveModifier(_modifier);
+    }
+
     public virtual void DoDamage(CharacterStats _targetStats)
     {
         if (TargetCanAvoidAttack(_targetStats))
@@ -119,9 +136,9 @@ public class CharacterStats : MonoBehaviour
 
         totalDamage = CheckTargetArnor(_targetStats, totalDamage);
         // 物理伤害
-        _targetStats.TakeDamage(totalDamage);
-        // 魔法伤害
-        // DoMagiclDamage(_targetStats);
+        // _targetStats.TakeDamage(totalDamage);
+        // 魔法伤害，若不想要可以注释掉，目前黑洞，扔剑，普攻会调用到DoDamage函数
+        DoMagiclDamage(_targetStats);
     }
 
     #region Magic damage and ailments
@@ -135,7 +152,8 @@ public class CharacterStats : MonoBehaviour
         // 每1点智力增加1点魔法伤害
         int totalMagicalDamage = _fireDamage + _iceDamage + _lightingDamage + intelligence.GetValue();
         totalMagicalDamage = CheckTargetResistance(_targetStats, totalMagicalDamage);
-        //_targetStats.TakeDamage(totalMagicalDamage);
+        // 造成魔法伤害，无此句则魔法无法造成伤害，只会有魔法的击中状态
+        _targetStats.TakeDamage(totalMagicalDamage);
 
         if (Mathf.Max(_fireDamage, _iceDamage, _lightingDamage) <= 0)
         {

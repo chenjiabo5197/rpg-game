@@ -37,6 +37,10 @@ public class Inventory : MonoBehaviour
 
     [Header("Item cooldown")]
     private float lastTimeUseFlask;
+    private float lastTimeUseArmor;
+
+    private float flaskCooldown;
+    private float armorCooldown;
 
     private void Awake()
     {
@@ -197,6 +201,7 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    // 从stash或者inventory中删除元素
     public void RemoveItem(ItemData _item)
     {
         if (inventoryDictionary.TryGetValue(_item,out InventoryItem value))
@@ -228,6 +233,7 @@ public class Inventory : MonoBehaviour
         UpdateSlotUI();
     }
 
+    // 根据传入的要制作的装备和所需的材料，判断在已有的stash下，能否制作装备
     public bool CanCraft(ItemData_Equipment _itemToCraft, List<InventoryItem> _requiredMaterials)
     {
         List<InventoryItem> materialsToRemove = new List<InventoryItem>();
@@ -265,10 +271,12 @@ public class Inventory : MonoBehaviour
         return true;
     }
 
+    // 获取所有正在装备的装备
     public List<InventoryItem> GetEquipmentList() => equipment;
 
     public List<InventoryItem> GetStashList() => stash;
 
+    // 根据传入的装备类型，获取player正在装备的装备
     public ItemData_Equipment GetEquipment(EquipmentType _type)
     {
         ItemData_Equipment equipedItem = null;
@@ -284,6 +292,7 @@ public class Inventory : MonoBehaviour
         return equipedItem;
     }
 
+    // 使用血瓶
     public void UseFlask()
     {
         ItemData_Equipment currentFlask = GetEquipment(EquipmentType.Flask);
@@ -292,10 +301,12 @@ public class Inventory : MonoBehaviour
             return;
         }
 
-        bool canUseFlask = Time.time > lastTimeUseFlask + currentFlask.itemCooldown;
+        // 判断是否在血瓶的冷却时间内
+        bool canUseFlask = Time.time > lastTimeUseFlask + flaskCooldown;
 
         if (canUseFlask)
         {
+            flaskCooldown = currentFlask.itemCooldown;
             currentFlask.Effect(null);
             lastTimeUseFlask = Time.time;
         }
@@ -303,6 +314,20 @@ public class Inventory : MonoBehaviour
         {
             Debug.Log("Flask on cooldown");
         }
+    }
+
+    public bool CanUseArmor()
+    {
+        ItemData_Equipment currentArmor = GetEquipment(EquipmentType.Armor);
+
+        if (Time.time > lastTimeUseArmor + armorCooldown)
+        {
+            armorCooldown = currentArmor.itemCooldown;
+            lastTimeUseArmor = Time.time;
+            return true;
+        }
+        Debug.Log("Armor on cooldown");
+        return false;
     }
 
     /*private void Update()

@@ -28,7 +28,7 @@ public class Skill : MonoBehaviour
 
     public virtual bool CanUseSkill()
     {
-        if(cooldownTimer < 0)
+        if (cooldownTimer < 0)
         {
             UseSkill();
             // 不在冷却时间内，重置冷却时间计时器
