@@ -35,6 +35,9 @@ public class Inventory : MonoBehaviour
     // 已装备的装备列表
     private UI_EquipmentSlot[] equipmentSlot;
 
+    [Header("Item cooldown")]
+    private float lastTimeUseFlask;
+
     private void Awake()
     {
         if (instance == null)
@@ -279,6 +282,27 @@ public class Inventory : MonoBehaviour
             }
         }
         return equipedItem;
+    }
+
+    public void UseFlask()
+    {
+        ItemData_Equipment currentFlask = GetEquipment(EquipmentType.Flask);
+        if (currentFlask == null)
+        {
+            return;
+        }
+
+        bool canUseFlask = Time.time > lastTimeUseFlask + currentFlask.itemCooldown;
+
+        if (canUseFlask)
+        {
+            currentFlask.Effect(null);
+            lastTimeUseFlask = Time.time;
+        }
+        else
+        {
+            Debug.Log("Flask on cooldown");
+        }
     }
 
     /*private void Update()

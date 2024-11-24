@@ -310,6 +310,20 @@ public class CharacterStats : MonoBehaviour
         }
     }
 
+    public virtual void IncreaseHealthBy(int _amount)
+    {
+        currentHealth += _amount;
+        if(currentHealth > GetMaxHealthValue())
+        {
+            currentHealth = GetMaxHealthValue();
+        }
+
+        if (onHealthChanged != null)
+        {
+            onHealthChanged();
+        }
+    }
+
     // ÑªÁ¿¼õÉÙº¯Êý
     protected virtual void DecreaseHealthBy(int _damage)
     {

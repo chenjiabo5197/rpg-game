@@ -14,3 +14,4 @@
 
 8、player死后，由于不掉落，当enemy再次攻击时，仍会有被击中的效果，需修复，且player死后，enemy还是会一直向player靠近
 
+9、enemy处于ice中时，移动是平移的，而非慢走

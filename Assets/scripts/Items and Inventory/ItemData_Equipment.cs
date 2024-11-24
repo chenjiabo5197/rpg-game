@@ -15,6 +15,7 @@ public class ItemData_Equipment : ItemData
 {
     public EquipmentType equipmentType;
 
+    public float itemCooldown;
     // 装备的影响数组
     public ItemEffect[] itemEffects;
 

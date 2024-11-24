@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerPrimaryAttackState : PlayerState
 {
     // 攻击计数器，用于切换攻击
-    private int comboCounter;
+    public int comboCounter { get; private set; }
     // 最后一次的攻击时间
     private float lastTimeAttacked;
     // 多长时间内的攻击视为连击

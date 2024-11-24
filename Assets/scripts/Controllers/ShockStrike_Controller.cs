@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ShockStrike_Controller : MonoBehaviour
@@ -26,7 +24,7 @@ public class ShockStrike_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!targetStats)
+        if (!targetStats)
         {
             return;
         }
@@ -39,7 +37,7 @@ public class ShockStrike_Controller : MonoBehaviour
         transform.position = Vector2.MoveTowards(transform.position, targetStats.transform.position, speed * Time.deltaTime);
         transform.right = transform.position - targetStats.transform.position;
 
-        if(Vector2.Distance(transform.position, targetStats.transform.position) < .1f)
+        if (Vector2.Distance(transform.position, targetStats.transform.position) < .1f)
         {
             anim.transform.localPosition = new Vector3(0, .5f);
             // 将动画的旋转四元数变为无旋转的四元数，则动画为竖直状态 
